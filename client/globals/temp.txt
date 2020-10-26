@@ -1,0 +1,2 @@
+This textfile exists because git does not track empty folders.
+This folder is meant to contain autoloads such as singeltons
