@@ -1,0 +1,40 @@
+.idea
+.vs
+bin
+cmake-build-*
+obj
+venv
+screenshots
+*.sln
+*.db
+*.pyc
+*.swp
+
+  
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+
+# Mono auto generated files
+mono_crash.*
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet Packages
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
