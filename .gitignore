@@ -16,6 +16,9 @@ screenshots
 export.cfg
 export_presets.cfg
 
+# Godot-specific build/export ignores
+build/
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 
