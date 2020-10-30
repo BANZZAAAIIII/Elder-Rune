@@ -8,7 +8,6 @@ var port = 6007
 
 func _ready():
 	Connect_To_Server()
-	print("hallo?")
 
 
 func Connect_To_Server():

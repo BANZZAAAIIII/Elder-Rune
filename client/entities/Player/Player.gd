@@ -1,9 +1,13 @@
 extends KinematicBody2D
 
+# movement vars
 var speed = 2
 var move_diretion = Vector2.ZERO
-
 var velocity = Vector2.ZERO
+
+#Weapon
+onready var weapons = preload("res://entities/Weapons/Weapon.tscn")
+
 
 func _ready():
 	pass
@@ -13,11 +17,9 @@ func _physics_process(delta):
 	movement_loop()
 	animation_loop()
 	change_sprite_direction()
+	attack()
 	
-func _process(delta):
-	pass
-
-
+	
 func movement_loop():
 	# Gets input, value is either 0 or 1
 	move_diretion.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -42,4 +44,9 @@ func change_sprite_direction():
 	if move_diretion.x == -1:
 		get_node("Sprite").scale.x = -1
 		
-
+func attack():
+	if Input.is_action_just_pressed("ui_select"):
+		get_node("TurnAxis").rotation = get_angle_to(get_global_mouse_position())
+		var w = weapons.instance()
+		get_node("TurnAxis/AttackPoint").add_child(w)
+		w.get_node("AnimationPlayer").play("attack")
