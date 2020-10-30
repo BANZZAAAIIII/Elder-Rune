@@ -1,7 +1,11 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/Player/Player.gd" type="Script" id=1]
+<<<<<<< HEAD
 [ext_resource path="res://Sprites/0x72_DungeonTilesetII_v1.3.png" type="Texture" id=2]
+=======
+[ext_resource path="res://Sprits/0x72_DungeonTilesetII_v1.3.png" type="Texture" id=2]
+>>>>>>> added walk and idle animation to player
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -53,7 +57,11 @@ script = ExtResource( 1 )
 position = Vector2( 0, -16 )
 texture = SubResource( 1 )
 hframes = 9
+<<<<<<< HEAD
 frame = 2
+=======
+frame = 7
+>>>>>>> added walk and idle animation to player
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -64,6 +72,7 @@ shape = SubResource( 2 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 3 )
 anims/Walk = SubResource( 4 )
+<<<<<<< HEAD
 
 [node name="TurnAxis" type="Position2D" parent="."]
 position = Vector2( 0, -7 )
@@ -71,3 +80,5 @@ position = Vector2( 0, -7 )
 [node name="AttackPoint" type="Position2D" parent="TurnAxis"]
 position = Vector2( 4, 0 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+=======
+>>>>>>> added walk and idle animation to player

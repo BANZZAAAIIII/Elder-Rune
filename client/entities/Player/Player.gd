@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+<<<<<<< HEAD
 # movement vars
 var speed = 2
 var move_diretion = Vector2.ZERO
@@ -50,3 +51,14 @@ func attack():
 		var w = weapons.instance()
 		get_node("TurnAxis/AttackPoint").add_child(w)
 		w.get_node("AnimationPlayer").play("attack")
+=======
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	get_node("AnimationPlayer").play("Idle")
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+>>>>>>> added walk and idle animation to player
