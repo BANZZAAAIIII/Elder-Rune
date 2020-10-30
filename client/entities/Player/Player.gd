@@ -52,7 +52,3 @@ func attack():
 		get_node("TurnAxis/AttackPoint").add_child(w)
 		w.get_node("AnimationPlayer").play("attack")
 
-
-
-
-
