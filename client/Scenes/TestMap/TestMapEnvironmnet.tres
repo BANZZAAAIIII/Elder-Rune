@@ -1,6 +1,9 @@
-[gd_resource type="TileSet" load_steps=76 format=2]
+[gd_resource type="TileSet" load_steps=82 format=2]
 
+[ext_resource path="res://Sprites/IceTileset.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/addwork.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/RPG Nature Tileset Autumn.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/RPG Nature Tileset.png" type="Texture" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
@@ -209,19 +212,28 @@ points = PoolVector2Array( 30.1997, 32, 1.51636, 32, 1.51636, 15.1564, 30.1997, 
 [sub_resource type="ConvexPolygonShape2D" id=69]
 points = PoolVector2Array( 30.5655, 31.4362, 1.30066, 31.4362, 1.30066, 15.5441, 30.5655, 15.5441 )
 
-[sub_resource type="ConvexPolygonShape2D" id=74]
+[sub_resource type="ConvexPolygonShape2D" id=70]
 points = PoolVector2Array( 64.454, 102.537, 83.6732, 103.829, 93.6865, 117.719, 80.6046, 127.247, 48.788, 127.247, 35.5446, 117.234, 45.3964, 104.96 )
 
-[sub_resource type="ConvexPolygonShape2D" id=70]
-points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
-
 [sub_resource type="ConvexPolygonShape2D" id=71]
-points = PoolVector2Array( 9.39751, 7.8623, 56.1437, 8.09485, 56.1437, 28.3282, 9.39751, 28.3282 )
+points = PoolVector2Array( 26.5039, 49.2769, 27.1737, 60.3286, 16.7918, 63.6775, 6.41, 60.3286, 5.7402, 51.2863, 16.4569, 47.6024 )
 
 [sub_resource type="ConvexPolygonShape2D" id=72]
-points = PoolVector2Array( 64, 32, 0, 32, 0, 0, 64, 0 )
+points = PoolVector2Array( 6.0751, 58.989, 7.07979, 51.2863, 15.4522, 47.6024, 25.4992, 50.6165, 25.8341, 57.6494, 16.122, 61.6682 )
 
 [sub_resource type="ConvexPolygonShape2D" id=73]
+points = PoolVector2Array( 5.7402, 59.9937, 5.7402, 52.291, 15.4522, 48.6071, 25.8341, 51.2863, 25.4992, 59.6588, 15.4522, 62.6728 )
+
+[sub_resource type="ConvexPolygonShape2D" id=74]
+points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )
+
+[sub_resource type="ConvexPolygonShape2D" id=75]
+points = PoolVector2Array( 9.39751, 7.8623, 56.1437, 8.09485, 56.1437, 28.3282, 9.39751, 28.3282 )
+
+[sub_resource type="ConvexPolygonShape2D" id=76]
+points = PoolVector2Array( 64, 32, 0, 32, 0, 0, 64, 0 )
+
+[sub_resource type="ConvexPolygonShape2D" id=77]
 points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 
 [resource]
@@ -235,14 +247,14 @@ points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 6/navigation_offset = Vector2( 0, 0 )
 6/shape_offset = Vector2( 0, 0 )
 6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-6/shape = SubResource( 70 )
+6/shape = SubResource( 74 )
 6/shape_one_way = false
 6/shape_one_way_margin = 1.0
 6/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 70 ),
+"shape": SubResource( 74 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 6/z_index = 0
@@ -256,14 +268,14 @@ points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 7/navigation_offset = Vector2( 0, 0 )
 7/shape_offset = Vector2( 0, 0 )
 7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-7/shape = SubResource( 71 )
+7/shape = SubResource( 75 )
 7/shape_one_way = false
 7/shape_one_way_margin = 1.0
 7/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 71 ),
+"shape": SubResource( 75 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 7/z_index = 0
@@ -277,14 +289,14 @@ points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 8/navigation_offset = Vector2( 0, 0 )
 8/shape_offset = Vector2( 0, 0 )
 8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-8/shape = SubResource( 72 )
+8/shape = SubResource( 76 )
 8/shape_one_way = false
 8/shape_one_way_margin = 1.0
 8/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 72 ),
+"shape": SubResource( 76 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 8/z_index = 0
@@ -298,14 +310,14 @@ points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 9/navigation_offset = Vector2( 0, 0 )
 9/shape_offset = Vector2( 0, 0 )
 9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-9/shape = SubResource( 73 )
+9/shape = SubResource( 77 )
 9/shape_one_way = false
 9/shape_one_way_margin = 1.0
 9/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 73 ),
+"shape": SubResource( 77 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 9/z_index = 0
@@ -1235,14 +1247,77 @@ points = PoolVector2Array( 32, 64, 0, 64, 0, 0, 32, 0 )
 45/navigation_offset = Vector2( 0, 0 )
 45/shape_offset = Vector2( -32, -96 )
 45/shape_transform = Transform2D( 1, 0, 0, 1, -32, -96 )
-45/shape = SubResource( 74 )
+45/shape = SubResource( 70 )
 45/shape_one_way = false
 45/shape_one_way_margin = 1.0
 45/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 74 ),
+"shape": SubResource( 70 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, -32, -96 )
 } ]
 45/z_index = 0
+46/name = "RPG Nature Tileset.png 46"
+46/texture = ExtResource( 4 )
+46/tex_offset = Vector2( 0, -32 )
+46/modulate = Color( 1, 1, 1, 1 )
+46/region = Rect2( 0, 0, 32, 64 )
+46/tile_mode = 0
+46/occluder_offset = Vector2( 0, 0 )
+46/navigation_offset = Vector2( 0, 0 )
+46/shape_offset = Vector2( 0, 0 )
+46/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+46/shape = SubResource( 71 )
+46/shape_one_way = false
+46/shape_one_way_margin = 1.0
+46/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 71 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+46/z_index = 0
+47/name = "IceTileset.png 47"
+47/texture = ExtResource( 1 )
+47/tex_offset = Vector2( 0, -32 )
+47/modulate = Color( 1, 1, 1, 1 )
+47/region = Rect2( 0, 0, 32, 64 )
+47/tile_mode = 0
+47/occluder_offset = Vector2( 0, 0 )
+47/navigation_offset = Vector2( 0, 0 )
+47/shape_offset = Vector2( 0, -32 )
+47/shape_transform = Transform2D( 1, 0, 0, 1, 0, -32 )
+47/shape = SubResource( 72 )
+47/shape_one_way = false
+47/shape_one_way_margin = 1.0
+47/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 72 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, -32 )
+} ]
+47/z_index = 0
+48/name = "RPG Nature Tileset Autumn.png 48"
+48/texture = ExtResource( 3 )
+48/tex_offset = Vector2( 0, -32 )
+48/modulate = Color( 1, 1, 1, 1 )
+48/region = Rect2( 0, 0, 32, 64 )
+48/tile_mode = 0
+48/occluder_offset = Vector2( 0, 0 )
+48/navigation_offset = Vector2( 0, 0 )
+48/shape_offset = Vector2( 0, 0 )
+48/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+48/shape = SubResource( 73 )
+48/shape_one_way = false
+48/shape_one_way_margin = 1.0
+48/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 73 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+48/z_index = 0
