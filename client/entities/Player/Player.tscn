@@ -54,13 +54,17 @@ script = ExtResource( 1 )
 position = Vector2( 0, -16 )
 texture = SubResource( 1 )
 hframes = 9
-frame = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2( 0, -3 )
 rotation = 1.5708
 shape = SubResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 3 )
@@ -68,6 +72,9 @@ anims/Walk = SubResource( 4 )
 
 [node name="TurnAxis" type="Position2D" parent="."]
 position = Vector2( 0, -7 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="AttackPoint" type="Position2D" parent="TurnAxis"]
 position = Vector2( 4, 0 )
