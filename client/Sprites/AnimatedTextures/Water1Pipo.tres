@@ -1,0 +1,19 @@
+[gd_resource type="AnimatedTexture" load_steps=3 format=2]
+
+[ext_resource path="res://Sprites/GroundTiles/[A]Water1_pipo.png" type="Texture" id=1]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 256, 192 )
+
+[resource]
+frames = 8
+fps = 1.0
+frame_0/texture = SubResource( 1 )
+frame_1/delay_sec = 0.0
+frame_2/delay_sec = 0.0
+frame_3/delay_sec = 0.0
+frame_4/delay_sec = 0.0
+frame_5/delay_sec = 0.0
+frame_6/delay_sec = 0.0
+frame_7/delay_sec = 0.0

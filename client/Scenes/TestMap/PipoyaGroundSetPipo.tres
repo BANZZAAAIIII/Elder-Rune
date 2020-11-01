@@ -1,19 +1,19 @@
-[gd_resource type="TileSet" load_steps=23 format=2]
+[gd_resource type="TileSet" load_steps=11 format=2]
 
-[ext_resource path="res://Sprites/GroundTiles/[A]Dirt2_pipo.png" type="Texture" id=13]
-[ext_resource path="res://Sprites/GroundTiles/[A]Dirt3_pipo.png" type="Texture" id=14]
-[ext_resource path="res://Sprites/GroundTiles/[A]Dirt1_pipo.png" type="Texture" id=15]
-[ext_resource path="res://Sprites/GroundTiles/[A]Grass1_pipo.png" type="Texture" id=16]
-[ext_resource path="res://Sprites/GroundTiles/[A]Grass3_pipo.png" type="Texture" id=17]
-[ext_resource path="res://Sprites/GroundTiles/[A]LongGrass_pipo.png" type="Texture" id=18]
-[ext_resource path="res://Sprites/GroundTiles/[A]Dirt4_pipo.png" type="Texture" id=19]
-[ext_resource path="res://Sprites/GroundTiles/[A]Flower_pipo.png" type="Texture" id=20]
-[ext_resource path="res://Sprites/GroundTiles/[A]Grass4_pipo.png" type="Texture" id=21]
-[ext_resource path="res://Sprites/GroundTiles/[A]Grass2_pipo.png" type="Texture" id=22]
+[ext_resource path="res://Sprites/GroundTiles/[A]Dirt2_pipo.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/GroundTiles/[A]Dirt3_pipo.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/GroundTiles/[A]Dirt1_pipo.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/GroundTiles/[A]Grass1_pipo.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/GroundTiles/[A]Grass3_pipo.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/GroundTiles/[A]LongGrass_pipo.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/GroundTiles/[A]Dirt4_pipo.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/GroundTiles/[A]Flower_pipo.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/GroundTiles/[A]Grass4_pipo.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/GroundTiles/[A]Grass2_pipo.png" type="Texture" id=10]
 
 [resource]
 22/name = "Dirt1"
-22/texture = ExtResource( 15 )
+22/texture = ExtResource( 3 )
 22/tex_offset = Vector2( 0, 0 )
 22/modulate = Color( 1, 1, 1, 1 )
 22/region = Rect2( 0, 0, 256, 192 )
@@ -36,7 +36,7 @@
 22/shapes = [  ]
 22/z_index = 0
 23/name = "Dirt2"
-23/texture = ExtResource( 13 )
+23/texture = ExtResource( 1 )
 23/tex_offset = Vector2( 0, 0 )
 23/modulate = Color( 1, 1, 1, 1 )
 23/region = Rect2( 0, 0, 256, 192 )
@@ -59,7 +59,7 @@
 23/shapes = [  ]
 23/z_index = 0
 24/name = "Dirt3"
-24/texture = ExtResource( 14 )
+24/texture = ExtResource( 2 )
 24/tex_offset = Vector2( 0, 0 )
 24/modulate = Color( 1, 1, 1, 1 )
 24/region = Rect2( 0, 0, 256, 192 )
@@ -82,7 +82,7 @@
 24/shapes = [  ]
 24/z_index = 0
 25/name = "Dirt4"
-25/texture = ExtResource( 19 )
+25/texture = ExtResource( 7 )
 25/tex_offset = Vector2( 0, 0 )
 25/modulate = Color( 1, 1, 1, 1 )
 25/region = Rect2( 0, 0, 256, 192 )
@@ -105,7 +105,7 @@
 25/shapes = [  ]
 25/z_index = 0
 26/name = "Flower"
-26/texture = ExtResource( 20 )
+26/texture = ExtResource( 8 )
 26/tex_offset = Vector2( 0, 0 )
 26/modulate = Color( 1, 1, 1, 1 )
 26/region = Rect2( 0, 0, 256, 192 )
@@ -128,7 +128,7 @@
 26/shapes = [  ]
 26/z_index = 0
 27/name = "Grass1"
-27/texture = ExtResource( 16 )
+27/texture = ExtResource( 4 )
 27/tex_offset = Vector2( 0, 0 )
 27/modulate = Color( 1, 1, 1, 1 )
 27/region = Rect2( 0, 0, 256, 192 )
@@ -151,7 +151,7 @@
 27/shapes = [  ]
 27/z_index = 0
 28/name = "Grass2"
-28/texture = ExtResource( 22 )
+28/texture = ExtResource( 10 )
 28/tex_offset = Vector2( 0, 0 )
 28/modulate = Color( 1, 1, 1, 1 )
 28/region = Rect2( 0, 0, 256, 192 )
@@ -174,7 +174,7 @@
 28/shapes = [  ]
 28/z_index = 0
 29/name = "Grass3"
-29/texture = ExtResource( 17 )
+29/texture = ExtResource( 5 )
 29/tex_offset = Vector2( 0, 0 )
 29/modulate = Color( 1, 1, 1, 1 )
 29/region = Rect2( 0, 0, 256, 192 )
@@ -197,7 +197,7 @@
 29/shapes = [  ]
 29/z_index = 0
 30/name = "Grass4"
-30/texture = ExtResource( 21 )
+30/texture = ExtResource( 9 )
 30/tex_offset = Vector2( 0, 0 )
 30/modulate = Color( 1, 1, 1, 1 )
 30/region = Rect2( 0, 0, 256, 192 )
@@ -220,7 +220,7 @@
 30/shapes = [  ]
 30/z_index = 0
 31/name = "LongGrass"
-31/texture = ExtResource( 18 )
+31/texture = ExtResource( 6 )
 31/tex_offset = Vector2( 0, 0 )
 31/modulate = Color( 1, 1, 1, 1 )
 31/region = Rect2( 0, 0, 256, 192 )
