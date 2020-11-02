@@ -31,6 +31,7 @@ func movement_loop():
 	# move_and_collide makes the character slide along collitions
 	# uses delta automaticly, so no need to use it here
 	motion = move_and_collide(motion)
+	
 
 func animation_loop():
 	# Checks of the player is moving or not and plays appropriate animation
@@ -39,11 +40,13 @@ func animation_loop():
 	else:
 		get_node("AnimationPlayer").play("Idle")
 
+
 func change_sprite_direction():
 	if move_diretion.x == 1:
 		get_node("Sprite").scale.x = 1
 	if move_diretion.x == -1:
 		get_node("Sprite").scale.x = -1
+		
 		
 func attack():
 	if Input.is_action_just_pressed("ui_select"):
@@ -52,3 +55,6 @@ func attack():
 		get_node("TurnAxis/AttackPoint").add_child(w)
 		w.get_node("AnimationPlayer").play("attack")
 
+		# update server
+		var player_pos = get_node("global_posistion").global_position
+		Server.send_position(player_pos)
