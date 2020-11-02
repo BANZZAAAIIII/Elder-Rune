@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/[A]Water7_pipo.png-ddbef6d353f27ba31fe61de78df49019.stex"
+path="res://.import/PipoCliff.png-d44f7eec2e804b5372dcd1e2528e716d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/GroundTiles/[A]Water7_pipo.png"
-dest_files=[ "res://.import/[A]Water7_pipo.png-ddbef6d353f27ba31fe61de78df49019.stex" ]
+source_file="res://Sprites/GroundTiles/PipoCliff.png"
+dest_files=[ "res://.import/PipoCliff.png-d44f7eec2e804b5372dcd1e2528e716d.stex" ]
 
 [params]
 
