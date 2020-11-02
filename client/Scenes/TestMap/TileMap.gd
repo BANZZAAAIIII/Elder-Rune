@@ -30,3 +30,4 @@ func _on_Timer_timeout():
 	tile_set.tile_set_region(1, Rect2(region_x, 0.0, 256.0, 192)) # Rectangle(start_x, start_y, width, height)
 	tile_set.tile_set_region(2, Rect2(region_x, 0.0, 256.0, 192)) # Rectangle(start_x, start_y, width, height)
 	tile_set.tile_set_region(3, Rect2(region_x, 0.0, 256.0, 192)) # Rectangle(start_x, start_y, width, height)
+	tile_set.tile_set_region(4, Rect2(region_x, 0.0, 256.0, 192)) # Rectangle(start_x, start_y, width, height)
