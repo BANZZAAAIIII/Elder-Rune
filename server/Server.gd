@@ -36,7 +36,12 @@ func _Peer_Disconnected(peer_id):
 	print("user " + str(peer_id) + " disconnected")
 	
 	
-remote func get_player_posistion(player_position):
+remote func _spawn_new_player(player_info):
+	pass
+	# Send info to all connected peers (exept the player that just connected)
+	# And spawn the player
+	
+remote func _get_player_posistion(player_position):
 	#This is not working for some reason
 	#var player_id = get_tree().get_rpc_sender_id()
 	
