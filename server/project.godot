@@ -16,5 +16,10 @@ _global_script_class_icons={
 [application]
 
 config/name="Server"
-run/main_scene="res://Server.tscn"
+run/main_scene="res://Server/Server.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+PlayerData="*res://Networking/PlayerData.gd"
+ServerNetwork="*res://Networking/ServerNetwork.gd"

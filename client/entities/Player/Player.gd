@@ -57,4 +57,4 @@ func attack():
 
 		# update server
 		var player_pos = get_node("global_posistion").global_position
-		Server.send_position(player_pos)
+		ClientNetwork.send_position(player_pos)
