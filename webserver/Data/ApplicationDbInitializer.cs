@@ -39,7 +39,7 @@ namespace webserver.Data
                 {
                     UserName = $"user{i}@uia.no",
                     Email = $"user{i}@uia.no",
-                    GamerTag = $"User{i}",
+                    GamerTag = $"user{i}",
                     EmailConfirmed = true
                 };
 

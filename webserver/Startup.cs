@@ -13,6 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using webserver.Models;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace webserver
 {
@@ -36,7 +39,7 @@ namespace webserver
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
-           services.AddRazorPages();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

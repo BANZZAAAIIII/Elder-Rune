@@ -9,6 +9,7 @@ namespace webserver.Models
     // Contains custom data in the user model
     public class ApplicationUser : IdentityUser 
     {
+        
         public string GamerTag { get; set; }
     }
 }
