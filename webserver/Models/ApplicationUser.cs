@@ -11,5 +11,8 @@ namespace webserver.Models
     {
         
         public string GamerTag { get; set; }
+
+
+        public List<DevBlog> DevBlogs { get; set; }
     }
 }
