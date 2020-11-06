@@ -6,8 +6,15 @@
 }
 <div class="container-fluid m-2">
     <div class="row">
-        <div class="col-12">
+        <div class="col-10">
             <h1>Developer blog</h1>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-dark">
+                <a class="nav-link text-light font-weight-bold" asp-area="" asp-controller="DevBlogs" asp-action="Create">
+                    New post
+                </a>
+            </button>
         </div>
         <div class="row">
             @foreach (var item in Model)

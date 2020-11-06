@@ -3,7 +3,9 @@
 <div class="container">
     <div class="row m-2">
         <div class="col-12">
-            @Html.DisplayFor(modelItem => Model.Title)
+            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@Model.Id">
+                @Html.DisplayFor(modelItem => Model.Title)
+            </a>
         </div>
     </div>
     <div class="row m-2">
