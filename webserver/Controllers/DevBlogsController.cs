@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using webserver.Data;
 using webserver.Models;
 
@@ -13,13 +16,19 @@ namespace webserver
     public class DevBlogsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<DevBlogsController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DevBlogsController(ApplicationDbContext context)
+        public DevBlogsController(ILogger<DevBlogsController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: DevBlogs
+        // Main DevBlog page, list all dev blogs
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser);
@@ -27,6 +36,9 @@ namespace webserver
         }
 
         // GET: DevBlogs/Details/5
+        // Show single devblog post
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +58,7 @@ namespace webserver
         }
 
         // GET: DevBlogs/Create
+        [HttpGet]
         public IActionResult Create()
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
@@ -57,7 +70,7 @@ namespace webserver
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,summary,Content,Time,ApplicationUserId")] DevBlog devBlog)
+        public async Task<IActionResult> Create([Bind("Id,Title,Summary,Content,Time,ApplicationUserId")] DevBlog devBlog)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +83,7 @@ namespace webserver
         }
 
         // GET: DevBlogs/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -91,7 +105,7 @@ namespace webserver
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,summary,Content,Time,ApplicationUserId")] DevBlog devBlog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Summary,Content,Time,ApplicationUserId")] DevBlog devBlog)
         {
             if (id != devBlog.Id)
             {
@@ -123,6 +137,7 @@ namespace webserver
         }
 
         // GET: DevBlogs/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -4,7 +4,22 @@
 }
 
 <div class="container-fluid m-2">
-  <div class="col-12">
-      <h1>Elder Runes</h1>
-  </div>
+    <div class="row"></div>
+        <div class="col-12">
+            <h1>Elder Runes</h1>
+        </div>
+
+        <div class="col-12">
+            <p>
+                <!-- TODO: Make this better -->
+                Be amoung the fist gamers to explore the world of Elder Runes. A vast land where mystical creatures,
+                unexplored land and epic adventures.
+                Magical treasures and items await those who are able to persivere difficulties and overcome challenges.
+            </p>
+        </div>
+    <!-- Prints the first five dev blogs in the model -->
+    @for (var i = 0; i < 5; i++)
+    {
+        <partial name="_DevBlogSummaryPartial" , model=Model.ElementAt(i) />
+    }
 </div>

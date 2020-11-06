@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace webserver.Data
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
+            //------------------------------User test data--------------------------------------
             var adminRole = new IdentityRole("Admin"); // Create role object
             rm.CreateAsync(adminRole).Wait();     // Add role to RoleManager
 
@@ -44,6 +46,25 @@ namespace webserver.Data
                 };
 
                 um.CreateAsync(user, "Password1.").Wait();
+            }
+
+            db.SaveChanges();
+
+            //--------------------------------DevBlog test data----------------------------------------------------
+            foreach(var user in db.ApplicationUsers.Include(u => u.DevBlogs))
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    Random r = new Random();
+                    string str = "ipuashdnuoyaisdngoasuydgbasouydgabpiufhiua afiubpasnfgbsauyof ayvfbnsapifgasuiybgf uiasgnfip";
+                    user.DevBlogs.Add(new DevBlog
+                    {
+                        Title = $"DevBlog {i}",
+                        Summary = $"DevBlog Summary {i}",
+                        Content = new string(str.ToCharArray().OrderBy(s => (r.Next(2) % 2) == 0).ToArray()),
+                        Time = new DateTime(2000 - i, i, 10 + i)
+                    });
+            }
             }
 
             db.SaveChanges();

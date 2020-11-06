@@ -13,6 +13,21 @@ namespace webserver.Models
     {
         public DevBlog() { }
 
+        public DevBlog(string title, string summary, string content)
+        {
+            Title = title;
+            Summary = summary;
+            Content = content;
+            Time = DateTime.Now.Date;
+        }
+
+        // Constructor which takes time as parameter, primarly used for testing
+        public DevBlog(string title, string summary, string content, DateTime time)
+            : this(title, summary, content)
+        {
+            Time = time;
+        }
+
         // Developer blog Id
         public int Id { get; set; }
 
@@ -24,7 +39,7 @@ namespace webserver.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
         [DisplayName("Summary")]
-        public string summary { get; set; }
+        public string Summary { get; set; }
 
         [Required]
         [StringLength(5000, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
