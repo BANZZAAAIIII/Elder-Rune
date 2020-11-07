@@ -22,8 +22,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-PlayerData="*res://globals/PlayerData.gd"
-Server="*res://globals/ClientNetworking.gd"
+ClientNetworking="*res://Globals/ClientNetworking.gd"
+PlayerData="*res://Globals/PlayerData.gd"
 
 [display]
 

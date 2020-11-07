@@ -21,7 +21,7 @@ func _ready():
 	timer.connect("timeout", self, "_on_Timer_timeout") # Create connection
 	timer.set_wait_time(delay)	# Set timer delay
 	timer.set_one_shot(false) # Make timer loop
-	timer.start()		# Start timer
+	#timer.start()		# Start timer TODO start timer
 	
 	tile_sets = tile_set.get_tiles_ids() # Get id of all the tilesets
 

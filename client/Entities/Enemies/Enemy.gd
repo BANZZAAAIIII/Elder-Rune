@@ -8,7 +8,7 @@ var velocity = Vector2.ZERO
 var health = 100
 
 #Weapon
-onready var texture = preload("res://entities/enemies/enemy sprits/big_goblin_1.tres")
+onready var texture = preload("res://Entities/Enemies/EnemySprites/big_goblin_1.tres")
 
 
 func _ready():

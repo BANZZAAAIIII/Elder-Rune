@@ -7,7 +7,7 @@ var move_diretion = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 #Weapon
-onready var weapons = preload("res://entities/Weapons/Weapon.tscn")
+onready var weapons = preload("res://Entities/Weapons/Weapon.tscn")
 
 
 func _ready():

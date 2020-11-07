@@ -1,7 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://entities/enemies/enemy sprits/big_goblin_1.tres" type="Texture" id=1]
-[ext_resource path="res://entities/enemies/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://Entities/Enemies/EnemySprites/big_goblin_1.tres" type="Texture" id=1]
+[ext_resource path="res://Entities/Enemies/Enemy.gd" type="Script" id=2]
+
+
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.99999

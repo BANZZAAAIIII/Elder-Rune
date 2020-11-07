@@ -75,6 +75,3 @@ func send_position(player_position):
 	
 remote func server_ans(player_position):
 	print_debug(player_position)
-
-
-
