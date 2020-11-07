@@ -8,21 +8,26 @@ const PLAYER_NAME = "name"
 
 
 # Create a player object to store data in
-func create_new_player(playerId: int, playerName: String) -> Dictionary:
-	return { PLAYER_ID: playerId, PLAYER_NAME: playerName }
+func create_new_player(player_id: int, player_name: String) -> Dictionary:
+	return { 
+		PLAYER_ID: player_id, PLAYER_NAME: player_name 
+	}
+
+# Adds a player to currently connected players
+func add_player(player_id: int, player_name: String):
+	var new_player = create_new_player(player_id, player_name)
+	self.players[player_id] = new_player
 	
-func add_player(playerId: int, playerName: String):
-	var newPlayer = create_new_player(playerId, playerName)
-	self.players[playerId] = newPlayer
+	return new_player
 
 # Remove a player
-func remove_player(playerId: int):
-	players.erase(playerId)
-	
-# Reset player data
-func reset():
-	self.players = {}
-	
+func remove_player(player_id: int):
+	players.erase(player_id)
+
+
 func print_players():
-	for player in players:
-		print(player)
+	print("players connected ")
+	for playerid in players:
+		print(str(players[playerid]))
+	print("---------------")
+	print("")	# Spacing

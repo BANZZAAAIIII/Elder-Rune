@@ -11,13 +11,14 @@ func _ready():
 
 func Start_Server() -> bool:
 	# Signals
-	# Will fire (call method) when player connects or disconnects from server
+	# Will fire (call method to the right) when player connects or disconnects from server
 	get_tree().connect("network_peer_connected", self, "_peer_connected")
 	get_tree().connect("network_peer_disconnected", self, "_peer_disconnected")
 
 	network = NetworkedMultiplayerENet.new()
 
 	var result = network.create_server(SERVER_PORT, MAX_PLAYERS)
+	
 	if result == OK:
 		get_tree().set_network_peer(network)
 		print_debug("server Started")
@@ -27,30 +28,33 @@ func Start_Server() -> bool:
 		return false
 
 # Runs when a peer connects to the server
-func _peer_connected(peer_id: int):
-	print("user " + str(peer_id) + " connected")
-	#rpc_id(peer_id, "register_player", "Server")
+func _peer_connected(peer_id):
+	printt("user connected: ", str(peer_id))
 
-# Runs when a peer disconnects from the server
-func _peer_disconnected(peer_id: int):
-	print("user " + str(peer_id) + " disconnected")
-	
-# Runs when a player connects to server
-#remote func register_player(peer_data):
-#	var id = get_tree().get_rpc_sender_id()
-#	PlayerData.add_player(id, peer_data)
-#	PlayerData.print_players()
-#	pass
-	
-#remote func _spawn_new_player(player_info):
-#	pass
-#	# Send info to all connected peers (exept the player that just connected)
-#	# And spawn the player
-	
-remote func _get_player_position(player_position):
-	#This is not working for some reason
-	#var player_id = get_tree().get_rpc_sender_id()
-	
-	rpc("server_ans", player_position)
-	
 
+func _peer_disconnected(peer_id):
+	printt("User disconnected: ", str(peer_id))
+
+
+remote func register_new_player(player_name):
+	var player_peer_id = get_tree().get_rpc_sender_id()
+	
+	# Adds the new player to a dict of all connected users
+	PlayerData.add_player(player_peer_id, player_name)
+	
+	rpc("register_new_players", player_peer_id, player_name)
+	
+	print("New player: " + str(player_peer_id) + " has connected as: " + str(player_name))
+
+remote func initiate_world():
+	var player_peer_id = get_tree().get_rpc_sender_id()
+	var world_node = get_node("/root/World")
+	
+	# Spawns connected players to newly connected player
+	# Loops over all player nodes in the world, AKA connected players
+	for player in world_node.get_node("ConnectedPlayers").get_children():
+		world_node.rpc_id(player_peer_id, "spawn_player", player.position, player.get_network_master())
+
+	# Spawns the connected player to the world
+	world_node.rpc("spawn_player", Vector2(0,0), player_peer_id)
+	
