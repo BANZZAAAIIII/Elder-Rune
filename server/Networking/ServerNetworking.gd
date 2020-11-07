@@ -33,7 +33,14 @@ func _peer_connected(peer_id):
 
 
 func _peer_disconnected(peer_id):
+	# Removes player from server dict
+	PlayerData.remove_player(peer_id)
+	
+	# Removes player node from the world
+	get_node("/root/World").rpc("despawn_player", peer_id)
+	
 	printt("User disconnected: ", str(peer_id))
+	
 
 
 remote func register_new_player(player_name):

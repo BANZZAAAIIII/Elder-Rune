@@ -9,9 +9,8 @@ puppet func spawn_player(player_pos, peer_id):
 	player_instance.name = str(peer_id)				# Sets the node name of the player. This has to be uniq
 	player_instance.set_network_master(peer_id) 	# Sets the network master. This has to be the peer id of the player
 	
-	get_node("Players").add_child(player_instance)
+	get_node("ConnectedPlayers").add_child(player_instance)
 
 
-puppet func remove_player(peer_id):
-	# TODO
-	pass
+puppet func despawn_player(peer_id):
+	get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()

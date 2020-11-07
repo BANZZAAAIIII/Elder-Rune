@@ -23,7 +23,8 @@ func add_player(player_id: int, player_name: String):
 # Remove a player
 func remove_player(player_id: int):
 	players.erase(player_id)
-	
+
+
 func get_player_name(peer_id):
 	return players[peer_id]
 

@@ -74,6 +74,10 @@ func register_new_player(player_name):
 	# Spawns other players and adds this player to server
 	rpc_id(1, "initiate_world")
 
+
 # Adds new users that connect to dict with all connected users
 puppet func register_new_players(player_peer_id: int, player_name: String):
 	PlayerData.add_player(player_peer_id, player_name)
+
+puppet func remove_player(peer_id):
+	PlayerData.remove_player(peer_id)
