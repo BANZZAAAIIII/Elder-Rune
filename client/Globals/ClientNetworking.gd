@@ -46,19 +46,23 @@ func _connected_ok():
 	
 
 func _server_disconnected():
-	# TODO: Despawn the player localy
+	# TODO: Despawn/disconect the player localy
 	print("Server kicked you")
+	get_node("/root/Menu").show()
+	queue_free()
 
 # Triggers when a new player connects to server
 func _peer_connected(peer_id):
-	print_debug(str(peer_id) + " connected to server")
-	print("")
+	pass
+#	print_debug(str(peer_id) + " connected to server")
+#	print("")
 
 
 # Triggers when a player disconnects
 func _peer_disconnected(peer_id):
-	print_debug(str(peer_id) + " disconnected")
-	print("")
+	pass
+#	print_debug(str(peer_id) + " disconnected")
+#	print("")
 
 
 func register_new_player(player_name):
@@ -78,6 +82,7 @@ func register_new_player(player_name):
 # Adds new users that connect to dict with all connected users
 puppet func register_new_players(player_peer_id: int, player_name: String):
 	PlayerData.add_player(player_peer_id, player_name)
+
 
 puppet func remove_player(peer_id):
 	PlayerData.remove_player(peer_id)

@@ -27,9 +27,11 @@ func Start_Server() -> bool:
 		print_debug("Failed to start server: %d" % result)
 		return false
 
+
 # Runs when a peer connects to the server
 func _peer_connected(peer_id):
-	printt("user connected: ", str(peer_id))
+	# printt("user connected: ", str(peer_id))
+	pass
 
 
 func _peer_disconnected(peer_id):
@@ -38,20 +40,23 @@ func _peer_disconnected(peer_id):
 	
 	# Removes player node from the world
 	get_node("/root/World").rpc("despawn_player", peer_id)
-	
 	printt("User disconnected: ", str(peer_id))
-	
 
 
 remote func register_new_player(player_name):
 	var player_peer_id = get_tree().get_rpc_sender_id()
 	
+	# Sends the client all currently connected users
+	PlayerData.rpc_id(player_peer_id, "get_player_list", PlayerData.get_all_players())
+	
 	# Adds the new player to a dict of all connected users
 	PlayerData.add_player(player_peer_id, player_name)
 	
+	# Tells other conected peers to register the new player
 	rpc("register_new_players", player_peer_id, player_name)
 	
 	print("New player: " + str(player_peer_id) + " has connected as: " + str(player_name))
+
 
 remote func initiate_world():
 	var player_peer_id = get_tree().get_rpc_sender_id()

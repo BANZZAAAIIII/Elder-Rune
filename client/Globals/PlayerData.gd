@@ -1,6 +1,6 @@
 extends Node
 
-var players = {}
+var __players = {}
 
 
 const PLAYER_ID = "id"
@@ -16,22 +16,28 @@ func create_new_player(player_id: int, player_name: String) -> Dictionary:
 # Adds a player to currently connected players
 func add_player(player_id: int, player_name: String):
 	var new_player = create_new_player(player_id, player_name)
-	self.players[player_id] = new_player
+	self.__players[player_id] = new_player
 	
 	return new_player
 
 # Remove a player
 func remove_player(player_id: int):
-	players.erase(player_id)
+	__players.erase(player_id)
 
 
 func get_player_name(peer_id):
-	return players[peer_id]
-
+	# This returns the ID as well, usefull for debugging	
+#	return players[peer_id]
+	# TODO to this better
+	return __players[peer_id].values()[1]
+	
 
 func print_players():
 	print("players connected ")
-	for playerid in players:
-		print(str(players[playerid]))
+	for playerid in __players:
+		print(str(__players[playerid]))
 	print("---------------")
 	print("")	# Spacing
+
+remote func get_player_list(s_players):
+	__players = s_players

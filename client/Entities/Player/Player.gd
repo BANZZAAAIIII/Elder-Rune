@@ -1,42 +1,51 @@
 extends KinematicBody2D
 
 
-# movement vars
-var speed = 200
-var move_diretion = Vector2.ZERO
-var prev_move_diretion = Vector2.ZERO
-var velocity = Vector2.ZERO
+# Movement vars
+var speed 				= null
+var move_diretion 		= Vector2.ZERO
+var prev_move_diretion 	= Vector2.ZERO
+var velocity 			= Vector2.ZERO
 
-
-puppet var puppet_pos
-puppet var puppet_vel = Vector2()
+# Movement vars for puppet node
+puppet var puppet_position 	= Vector2()
+puppet var puppet_velocity	= Vector2()
 
 #Weapon
 onready var weapons = preload("res://entities/Weapons/Weapon.tscn")
 
 func _ready():
 	if is_network_master():
+		# Sets player name over character
+		var player_name = PlayerData.get_player_name(
+			get_tree().get_network_unique_id()
+		)
+		get_node("PlayerName").text = str(player_name)
+		# Returns speed and sets it in set_speed
+		rpc_id(1, "get_speed")
 		# This is so only the player will have an activ camere node
 		var camera = preload("res://Entities/Player/PlayerCamera.tscn").instance()
 		self.add_child(camera)
-		var player_name = PlayerData.get_player_name(get_tree().get_network_unique_id())
-		print(player_name)
-		get_node("PlayerName").text = str(player_name)
+		
 	else:
-		puppet_pos = position
+		var player_name = PlayerData.get_player_name(
+			self.get_network_master()
+		)
+		get_node("PlayerName").text = str(player_name)
+		# initilizing puppet_position
+		puppet_position = position
+		
 
 
 func _physics_process(delta):
 	movement_loop()
 	animation_loop()
 	attack()
-			
 	change_sprite_direction()
 	
 	
 func movement_loop():
 	if is_network_master():
-		
 		# Gets input, value is either 0 or 1
 		move_diretion.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 		move_diretion.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -45,24 +54,26 @@ func movement_loop():
 		
 		# To avoid sending data if the player hasen't moved since last frame
 		if move_diretion != prev_move_diretion:
-			# Updates the player node on server with new position and velocity
-			rset_unreliable("puppet_pos", position)
-			rset_unreliable("puppet_vel", velocity)
-		
+			# Updates all other connected peers about the players velocity and 
+			# position when moving. If the player is holding down a button the 
+			# Velocity is used to "predictit" the movment of the player.
+			rset_unreliable("puppet_position", position)
+			rset_unreliable("puppet_velocity", velocity)
 		prev_move_diretion = move_diretion
 	else:
 		# Gets position and velocity from node on server
-		position = puppet_pos
-		velocity = puppet_vel
+		position = puppet_position
+		velocity = puppet_velocity
 	
-	
-		# move_and_slide makes the character slide along collitions
-		# uses delta automaticly, so no need to use it here
+	# move_and_slide makes the character slide along collitions
+	# uses delta automaticly, so no need to use it here
 	velocity = move_and_slide(velocity)
 	
+	# This for some reason removes a lot of jittering 
 	if not is_network_master():
-		puppet_pos = position
-		
+		puppet_position = position
+
+
 func animation_loop():
 	# Checks of the player is moving or not and plays appropriate animation
 	if move_diretion != Vector2.ZERO:
@@ -72,9 +83,10 @@ func animation_loop():
 
 
 func change_sprite_direction():
-	if move_diretion.x == 1:
+	# Changes what diraction a puppet or master node/player is moving
+	if velocity.x >= 1:
 		get_node("Sprite").scale.x = 1
-	if move_diretion.x == -1:
+	if velocity.x <= -1:
 		get_node("Sprite").scale.x = -1
 		
 		
@@ -84,4 +96,7 @@ func attack():
 		var w = weapons.instance()
 		get_node("TurnAxis/AttackPoint").add_child(w)
 		w.get_node("AnimationPlayer").play("attack")
+		
 
+remote func set_speed(s_speed):
+	speed = 300
