@@ -9,6 +9,7 @@ screenshots
 *.db
 *.pyc
 *.swp
+*.user
 
   
 # Godot-specific ignores
