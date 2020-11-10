@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using webserver.Data;
 using webserver.Models;
+using webserver.Utility;
 
 namespace webserver.Controllers
 {
@@ -25,22 +26,24 @@ namespace webserver.Controllers
         // Main page, shows newest developer blogs
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int ? pageNumber)
         {
-
-            var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser);
-            return View(await applicationDbContext.ToListAsync());
+            var devBlogs = _context.DevBlogs.Include(d => d.ApplicationUser).OrderByDescending(s => s.Time);
+            int pageSize = 5;
+            return View(await PaginatedList<DevBlog>.CreateAsync(devBlogs.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
+        [HttpGet]
         [AllowAnonymous]
-        public IActionResult Privacy()
+        public async Task<IActionResult> Privacy()
         {
-            return View();
+            return await Task.Run(() => View());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return await Task.Run(() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier }));
         }
     }
 }

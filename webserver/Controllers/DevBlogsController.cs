@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using webserver.Data;
 using webserver.Models;
+using webserver.Utility;
 
 namespace webserver
 {
@@ -28,18 +29,29 @@ namespace webserver
 
         // GET: DevBlogs
         // Main DevBlog page, list all dev blogs
+        [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser);
+            var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser).OrderByDescending(s => s.Time);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDevBlog(int ? pageNumber)
+        {
+            var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser).OrderByDescending(s => s.Time);
+            int pageSize = 5;
+            return PartialView("_DevBlogSummaryPartial", await PaginatedList<DevBlog>.CreateAsync(applicationDbContext.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: DevBlogs/Details/5
         // Show single devblog post
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int ? id)
         {
             if (id == null)
             {

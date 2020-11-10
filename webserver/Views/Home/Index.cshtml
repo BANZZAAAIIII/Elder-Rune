@@ -1,25 +1,65 @@
-﻿@model IEnumerable<webserver.Models.DevBlog>
+﻿@model webserver.Utility.PaginatedList<webserver.Models.DevBlog>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="container-fluid m-2">
     <div class="row"></div>
-        <div class="col-12">
-            <h1>Elder Runes</h1>
-        </div>
+    <div class="col-12">
+        <h1>Elder Runes</h1>
+    </div>
 
-        <div class="col-12">
-            <p>
-                <!-- TODO: Make this better -->
-                Be amoung the fist gamers to explore the world of Elder Runes. A vast land where mystical creatures,
-                unexplored land and epic adventures.
-                Magical treasures and items await those who are able to persivere difficulties and overcome challenges.
-            </p>
-        </div>
-    <!-- Prints the first five dev blogs in the model -->
-    @for (var i = 0; i < 5; i++)
-    {
-        <partial name="_DevBlogSummaryPartial" , model=Model.ElementAt(i) />
-    }
+    <div class="col-12">
+        <p>
+            <!-- TODO: Make this better -->
+            Be amoung the fist gamers to explore the world of Elder Runes. A vast land where mystical creatures,
+            unexplored land and epic adventures.
+            Magical treasures and items await those who are able to persivere difficulties and overcome challenges.
+        </p>
+    </div>
+    <div id="content" class="container" />
 </div>
+@foreach (var item in Model)
+{
+
+    <div class="row m-2">
+        <div class="col-12">
+            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@item.Id">
+                @Html.DisplayFor(modelItem => item.Title)
+            </a>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-12">
+            @Html.DisplayFor(modelItem => item.Summary)
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-6">
+            @Html.DisplayFor(modelItem => item.Time)
+        </div>
+        <div class="col-6">
+            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@item.Id">Read More...</a>
+        </div>
+    </div>
+}
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

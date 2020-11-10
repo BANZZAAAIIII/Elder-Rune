@@ -1,6 +1,4 @@
-﻿@model IEnumerable<webserver.Models.DevBlog>
-
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -16,10 +14,18 @@
                 </a>
             </button>
         </div>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <partial name="_DevBlogSummaryPartial" , model="item" />
-            }
-        </div>
+
+        <div id="content" class="container"/>
+    </div>
 </div>
+
+@section Scripts
+{
+<script>
+    $(function () {
+
+        $("#content").load("DevBlogs/GetDevBlog");
+        return false;
+    });
+</script>
+}

@@ -53,8 +53,11 @@ namespace webserver.Data
             //--------------------------------DevBlog test data----------------------------------------------------
             foreach(var user in db.ApplicationUsers.Include(u => u.DevBlogs))
             {
-                for (int i = 1; i <= 5; i++)
+                for (int i = 1; i <= 20; i++)
                 {
+                    var day = 1;
+                    int month = 1;
+                    int year = 1980;
                     Random r = new Random();
                     string str = "ipuashdnuoyaisdngoasuydgbasouydgabpiufhiua afiubpasnfgbsauyof ayvfbnsapifgasuiybgf uiasgnfip";
                     user.DevBlogs.Add(new DevBlog
@@ -62,8 +65,13 @@ namespace webserver.Data
                         Title = $"DevBlog {i}",
                         Summary = $"DevBlog Summary {i}",
                         Content = new string(str.ToCharArray().OrderBy(s => (r.Next(2) % 2) == 0).ToArray()),
-                        Time = new DateTime(2000 - i, i, 10 + i)
+                        Time = new DateTime(year, month, day)
                     });
+                    day += 1;
+                    month += 1;
+                    year += 1;
+
+                    if (month >= 12) month = 1;
             }
             }
 

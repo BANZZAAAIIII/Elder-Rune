@@ -1,24 +1,59 @@
-﻿@model DevBlog
+﻿@model webserver.Utility.PaginatedList<webserver.Models.DevBlog>
 
-<div class="container">
+
+@foreach (var item in Model)
+{
+
     <div class="row m-2">
         <div class="col-12">
-            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@Model.Id">
-                @Html.DisplayFor(modelItem => Model.Title)
+            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@item.Id">
+                @Html.DisplayFor(modelItem => item.Title)
             </a>
         </div>
     </div>
     <div class="row m-2">
         <div class="col-12">
-            @Html.DisplayFor(modelItem => Model.Summary)
+            @Html.DisplayFor(modelItem => item.Summary)
         </div>
     </div>
     <div class="row m-2">
         <div class="col-6">
-            @Html.DisplayFor(modelItem => Model.Time)
+            @Html.DisplayFor(modelItem => item.Time)
         </div>
         <div class="col-6">
-            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@Model.Id">Read More...</a>
+            <a asp-action="Details" asp-controller="DevBlogs" asp-route-id="@item.Id">Read More...</a>
         </div>
     </div>
-</div>
+}
+@{ // Check if there is a previous or next page, return "" if not disabling buttons
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a id="previousBtn" class="btn btn-primary @prevDisabled">Previous</a>
+<a id="nextBtn" class="btn btn-primary @nextDisabled">Next</a>
+
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $("#previousBtn").click(function () {
+                console.log("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)")
+                $("#content").load("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)");
+                prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                return false;
+
+            });
+
+            $("#nextBtn").click(function () {
+                console.("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)")
+                $("#content").load("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex + 1)");
+                nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                return false;
+            });
+
+        //$("#content").load("DevBlogs/GetDevBlog/", $('#nameform').serialize());
+    });
+    </script>
+}
