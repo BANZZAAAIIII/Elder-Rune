@@ -6,6 +6,7 @@ var move_diretion = Vector2.ZERO
 var velocity = Vector2.ZERO
 
 var health = 100
+signal health_changed(send_health) # Signal should be sent every time enemy updates his health
 
 #Weapon
 onready var texture = preload("res://Entities/Enemies/EnemySprites/big_goblin_1.tres")
@@ -38,5 +39,6 @@ func change_sprite_direction():
 func _on_Hurtbox_area_entered(area):
 	health -= 10
 	print(health)
-	if health < 0:
+	emit_signal("health_changed", health)
+	if health <= 0:
 		queue_free()

@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 
 # Movement vars
-var speed 				= null
+var speed 				= 1
 var move_diretion 		= Vector2.ZERO
 var prev_move_diretion 	= Vector2.ZERO
 var velocity 			= Vector2.ZERO

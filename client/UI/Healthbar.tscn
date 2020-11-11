@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://UI/Healthbar.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/UISprites/SimpleHealthbarEmpty.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/UISprites/SimpleHealthbarFull.png" type="Texture" id=3]
+
+[node name="Bar" type="TextureProgress"]
+margin_right = 25.0
+margin_bottom = 3.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
