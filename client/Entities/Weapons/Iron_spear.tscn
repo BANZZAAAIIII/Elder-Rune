@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/Weapons/Atlas/Iron_spear.tres" type="Texture" id=1]
+[ext_resource path="res://Entities/Weapons/Weapon.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "attack"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("PositionNode:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("PositionNode:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 0.297302, 0.189465 ),
+"update": 0,
+"values": [ Vector2( -4, 0 ), Vector2( 12, 0 ) ]
+}
+
+[node name="Iron_Spear" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/attack = SubResource( 1 )
+
+[node name="PositionNode" type="Position2D" parent="."]
+position = Vector2( -4, 0 )
+rotation = 1.5708
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="PositionNode"]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -12 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+rotation = 1.5708
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PoolVector2Array( -2.99997, 7.00001, -3.00014, -38, -0.00014118, -39, 2.99986, -38, 3.00003, 6.99999 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

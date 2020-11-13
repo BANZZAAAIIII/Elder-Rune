@@ -6,7 +6,7 @@ puppet func spawn_player(player_pos, peer_id):
 	var player_instance = player_node.instance()
 	
 	# TODO spanw player in last known location
-	player_instance.position = Vector2(100, 50)		# Sets the positions of the player
+	player_instance.position = player_pos			# Sets the positions of the player
 	player_instance.name = str(peer_id)				# Sets the node name of the player. This has to be uniq
 	player_instance.set_network_master(peer_id) 	# Sets the network master. This has to be the peer id of the player
 	

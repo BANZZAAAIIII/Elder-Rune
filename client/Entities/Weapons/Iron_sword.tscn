@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Sprites/0x72_DungeonTilesetII_v1.3.png" type="Texture" id=1]
+[ext_resource path="res://Entities/Weapons/Atlas/Iron_sword.tres" type="Texture" id=1]
 [ext_resource path="res://Entities/Weapons/Weapon.gd" type="Script" id=2]
-
 
 [sub_resource type="Animation" id=1]
 resource_name = "attack"
@@ -17,36 +16,34 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 40.0, 130.0 ]
+"values": [ -35.0, 35.0 ]
 }
 
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 1 )
-region = Rect2( 336, 80, 16, 32 )
-
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 17.647
-height = 0.0
-
-[node name="Weapon" type="Node2D"]
+[node name="Iron_sword" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 1 )
 
 [node name="PositionNode" type="Position2D" parent="."]
-rotation = 2.26893
+rotation = -0.203622
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Sprite" type="Sprite" parent="PositionNode"]
-position = Vector2( 0, 1 )
-texture = SubResource( 2 )
-offset = Vector2( 0, -16 )
+position = Vector2( 5.11049, 6.35918 )
+rotation = -0.785398
+texture = ExtResource( 1 )
+offset = Vector2( 8, -1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.5708
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( -4.76837e-07, -7.76171 )
-scale = Vector2( 0.839925, 0.662719 )
-shape = SubResource( 3 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+visible = false
+polygon = PoolVector2Array( -2, 1.00001, -12, -13, -11.0001, -17, -7.00007, -19, -2.00007, -20, 1.99993, -20, 6.99993, -19, 10.9999, -17, 12, -13, 2, 0.999993 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

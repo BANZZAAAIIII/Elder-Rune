@@ -12,7 +12,7 @@ puppet var puppet_position 	= Vector2()
 puppet var puppet_velocity	= Vector2()
 
 #Weapon
-onready var weapons = preload("res://Entities/Weapons/Weapon.tscn")
+onready var weapons = preload("res://Entities/Weapons/Iron_spear.tscn")
 
 func _ready():
 	if is_network_master():
