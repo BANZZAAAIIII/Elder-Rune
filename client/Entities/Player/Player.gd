@@ -34,15 +34,15 @@ func _ready():
 		get_node("PlayerName").text = str(player_name)
 		# initilizing puppet_position
 		puppet_position = position
-		
+	
 
 
 func _physics_process(delta):
 	movement_loop()
 	animation_loop()
 	attack()
-	change_sprite_direction()
-	
+
+
 	
 func movement_loop():
 	if is_network_master():
@@ -77,26 +77,27 @@ func movement_loop():
 func animation_loop():
 	# Checks of the player is moving or not and plays appropriate animation
 	if move_diretion != Vector2.ZERO:
-		get_node("AnimationPlayer").play("Walk")
+		get_node("PlayerSprite/SpriteAnimation").play("Walk")
+		change_sprite_direction()
 	else:
-		get_node("AnimationPlayer").play("Idle")
+		get_node("PlayerSprite/SpriteAnimation").play("Idle")
 
 
 func change_sprite_direction():
 	# Changes what diraction a puppet or master node/player is moving
 	if velocity.x >= 1:
-		get_node("Sprite").scale.x = 1
+		get_node("PlayerSprite/Sprite").scale.x = 1
 	if velocity.x <= -1:
-		get_node("Sprite").scale.x = -1
-		
-		
+		get_node("PlayerSprite/Sprite").scale.x = -1
+
+
 func attack():
 	if Input.is_action_just_pressed("ui_select") and is_network_master():
 		get_node("TurnAxis").rotation = get_angle_to(get_global_mouse_position())
 		var w = weapons.instance()
 		get_node("TurnAxis/AttackPoint").add_child(w)
 		w.get_node("AnimationPlayer").play("attack")
-		
+
 
 remote func set_speed(s_speed):
 	speed = 300
