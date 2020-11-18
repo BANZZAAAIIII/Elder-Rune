@@ -43,7 +43,7 @@ namespace webserver
         public async Task<IActionResult> GetDevBlog(int ? pageNumber)
         {
             var applicationDbContext = _context.DevBlogs.Include(d => d.ApplicationUser).OrderByDescending(s => s.Time);
-            int pageSize = 5;
+            int pageSize = 5;       // Number of items to return from database
             return PartialView("_DevBlogSummaryPartial", await PaginatedList<DevBlog>.CreateAsync(applicationDbContext.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 

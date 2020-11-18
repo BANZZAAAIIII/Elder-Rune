@@ -25,35 +25,4 @@
         </div>
     </div>
 }
-@{ // Check if there is a previous or next page, return "" if not disabling buttons
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
 
-<a id="previousBtn" class="btn btn-primary @prevDisabled">Previous</a>
-<a id="nextBtn" class="btn btn-primary @nextDisabled">Next</a>
-
-
-@section Scripts
-{
-    <script>
-        $(function () {
-            $("#previousBtn").click(function () {
-                console.log("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)")
-                $("#content").load("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)");
-                prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-                return false;
-
-            });
-
-            $("#nextBtn").click(function () {
-                console.("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex - 1)")
-                $("#content").load("DevBlogs/GetDevBlog/?pageNumber=@(Model.PageIndex + 1)");
-                nextDisabled = !Model.HasNextPage ? "disabled" : "";
-                return false;
-            });
-
-        //$("#content").load("DevBlogs/GetDevBlog/", $('#nameform').serialize());
-    });
-    </script>
-}

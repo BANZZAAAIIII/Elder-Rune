@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Blog";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container-fluid m-2">
@@ -8,24 +8,16 @@
             <h1>Developer blog</h1>
         </div>
         <div class="col-2">
-            <button class="btn btn-dark">
-                <a class="nav-link text-light font-weight-bold" asp-area="" asp-controller="DevBlogs" asp-action="Create">
-                    New post
-                </a>
-            </button>
+            <a class="nav-link text-light font-weight-bold btn btn-dark" asp-area="" asp-controller="DevBlogs" asp-action="Create">
+                New post
+            </a>
         </div>
-
-        <div id="content" class="container"/>
+        <div class="container DevBlog" />
+    </div>
+    <div class="row">
+        <button id="previous" class="nav-link text-light font-weight-bold btn btn-dark Previous" type="button">Previous</button>
+        <button id="next" class="nav-link text-light font-weight-bold btn btn-dark Next" type="button">Next</button>       
     </div>
 </div>
 
-@section Scripts
-{
-<script>
-    $(function () {
 
-        $("#content").load("DevBlogs/GetDevBlog");
-        return false;
-    });
-</script>
-}
