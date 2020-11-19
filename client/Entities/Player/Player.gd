@@ -25,6 +25,8 @@ func _ready():
 		rpc_id(1, "get_speed")
 		# This is so only the player will have an activ camere node
 		var camera = preload("res://Entities/Player/PlayerCamera.tscn").instance()
+		var chat = preload("res://Globals/Chat.tscn").instance()
+		self.add_child(chat)
 		self.add_child(camera)
 		
 	else:
@@ -73,6 +75,7 @@ func movement_loop():
 	if not is_network_master():
 		puppet_position = position
 
+	
 
 func animation_loop():
 	# Checks of the player is moving or not and plays appropriate animation

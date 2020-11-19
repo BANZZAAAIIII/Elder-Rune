@@ -36,7 +36,7 @@ func Connect_To_Server():
 	else:
 		print("Failed to connect to server")
 		return false
-
+	
 
 func _connected_fail():
 	print("Failed to connect")
@@ -86,3 +86,11 @@ puppet func register_new_players(player_peer_id: int, player_name: String):
 
 puppet func remove_player(peer_id):
 	PlayerData.remove_player(peer_id)
+	
+#Recieve chat message from server and access current players chatbox
+remote func recieve_complete_chat(complete_text):
+	var player_id = get_tree().get_network_unique_id()
+	var path = "/root/World/ConnectedPlayers/" + str(player_id) + "/ChatBox"
+	print_debug(path)
+	get_node(path)
+	get_node(path).print_chat_message(complete_text)

@@ -69,4 +69,9 @@ remote func initiate_world():
 
 	# Spawns the connected player to the world
 	world_node.rpc("spawn_player", Vector2(0,0), player_peer_id)
+
+#Return chat message to ClientNetworking	
+func return_chat_message(complete_text):
+	rpc("recieve_complete_chat", complete_text)
+	
 	
