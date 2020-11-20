@@ -1,0 +1,10 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[ext_resource path="res://Sprites/UISprites/alagard_by_pix3m-d6awiwp.ttf" type="DynamicFontData" id=1]
+
+[resource]
+size = 32
+outline_size = 1
+outline_color = Color( 0.0117647, 0.0117647, 0.0117647, 0.0313726 )
+use_filter = true
+font_data = ExtResource( 1 )

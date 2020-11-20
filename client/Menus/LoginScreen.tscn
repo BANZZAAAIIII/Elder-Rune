@@ -1,0 +1,109 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Menus/LoginScreen.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/UISprites/alagard_by_pix3m-d6awiwp.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Sprites/UISprites/UIFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Menus/MenuTheme.tres" type="Theme" id=4]
+
+[sub_resource type="DynamicFont" id=9]
+size = 20
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=8]
+font_data = ExtResource( 2 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = -75.0
+margin_right = 160.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 320, 0 )
+columns = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UsernameLabel" type="Label" parent="GridContainer"]
+margin_right = 182.0
+margin_bottom = 38.0
+text = "Username:"
+
+[node name="Username" type="LineEdit" parent="GridContainer"]
+margin_left = 186.0
+margin_right = 336.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 150, 0 )
+focus_next = NodePath("../../PasswordContainer/Password")
+custom_fonts/font = SubResource( 9 )
+custom_colors/font_color = Color( 0.941176, 1, 1, 1 )
+text = "TestUser"
+
+[node name="PasswordLabel" type="Label" parent="GridContainer"]
+margin_top = 42.0
+margin_right = 182.0
+margin_bottom = 80.0
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.941176, 1, 1, 1 )
+text = "Password:"
+
+[node name="Password" type="LineEdit" parent="GridContainer"]
+margin_left = 186.0
+margin_top = 42.0
+margin_right = 336.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 150, 0 )
+focus_next = NodePath("../../PasswordContainer/Password")
+theme = ExtResource( 4 )
+custom_fonts/font = SubResource( 9 )
+custom_colors/font_color = Color( 0.941176, 1, 1, 1 )
+text = "Password1."
+
+[node name="RememberUsername" type="CheckBox" parent="GridContainer"]
+margin_top = 84.0
+margin_right = 182.0
+margin_bottom = 108.0
+focus_next = NodePath("../ButtonContainer/Login")
+focus_previous = NodePath("../PasswordContainer/Password")
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.960784, 0.960784, 0.960784, 1 )
+text = "Remember username"
+
+[node name="MarginContainer" type="MarginContainer" parent="GridContainer"]
+margin_left = 186.0
+margin_top = 84.0
+margin_right = 336.0
+margin_bottom = 108.0
+
+[node name="LoginButton" type="Button" parent="GridContainer"]
+margin_top = 112.0
+margin_right = 92.0
+margin_bottom = 150.0
+focus_previous = NodePath("../../PasswordContainer/Password")
+size_flags_horizontal = 0
+text = "Login"
+
+[node name="World" type="OptionButton" parent="GridContainer"]
+margin_left = 220.0
+margin_top = 112.0
+margin_right = 336.0
+margin_bottom = 150.0
+focus_previous = NodePath("../../PasswordContainer/Password")
+size_flags_horizontal = 8
+text = "Select"
+items = [ "100", null, false, 0, null, "101", null, false, 1, null ]
+selected = 0
+[connection signal="pressed" from="GridContainer/LoginButton" to="." method="_on_LoginButton_pressed"]
