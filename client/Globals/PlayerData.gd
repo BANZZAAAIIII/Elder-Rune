@@ -22,22 +22,27 @@ func add_player(player_id: int, player_name: String):
 
 # Remove a player
 func remove_player(player_id: int):
-	__players.erase(player_id)
+	if __players[player_id]:
+		__players.erase(player_id)
+	else:
+		print_debug("Player with ID:" + str(player_id) + " wasnt found")
 
 
 func get_player_name(peer_id):
 	# This returns the ID as well, usefull for debugging	
 #	return players[peer_id]
 	# TODO to this better
-	return __players[peer_id].values()[1]
+	return __players[peer_id][PLAYER_NAME]
 	
 
 func print_players():
 	print("players connected ")
-	for playerid in __players:
-		print(str(__players[playerid]))
+	for player in __players.values():
+		print("Peer ID:" + str(player[PLAYER_ID]) + ", Name: " + player[PLAYER_NAME])
 	print("---------------")
 	print("")	# Spacing
 
+
+# Gets a list of all currently connected users from the server when the player first connects
 remote func get_player_list(s_players):
 	__players = s_players

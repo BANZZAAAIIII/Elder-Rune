@@ -23,22 +23,27 @@ func create_new_player(player_id: int, player_name: String) -> Dictionary:
 func add_player(player_id: int, player_name: String):
 	var new_player = create_new_player(player_id, player_name)
 	self.__players[player_id] = new_player
-	
+
 	return new_player
 
 
 # Remove a player
 func remove_player(player_id: int):
-	__players.erase(player_id)
+	if __players.has(player_id):
+		__players.erase(player_id)
+	else:
+		print_debug("Player with ID:" + str(player_id) + " wasnt found")
 
 
 func get_all_players():
 	return __players
-
+	
+func get_player(peer_id):
+	return __players[peer_id]
 
 func print_players():
 	print("players connected ")
-	for playerid in __players:
-		print(str(__players[playerid]))
+	for player in __players.values():
+		print("Peer ID:" + str(player[PLAYER_ID]) + ", Name: " + player[PLAYER_NAME])
 	print("---------------")
 	print("")	# Spacing

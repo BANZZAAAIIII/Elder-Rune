@@ -8,11 +8,19 @@ var prev_move_diretion 	= Vector2.ZERO
 var velocity 			= Vector2.ZERO
 
 # Movement vars for puppet node
-puppet var puppet_position 	= Vector2()
-puppet var puppet_velocity	= Vector2()
+remote var puppet_position 	= Vector2()
+var prev_puppet_position	= Vector2.ZERO
+remote var puppet_velocity	= Vector2()
 
 #Weapon
 onready var weapons = preload("res://Entities/Weapons/Iron_spear.tscn")
+
+# Testing
+onready var position_label_loc = get_node("PosLoc")
+onready var position_label_pup = get_node("PosPup")
+
+var moving = false
+
 
 func _ready():
 	if is_network_master():
@@ -23,7 +31,9 @@ func _ready():
 		get_node("PlayerName").text = str(player_name)
 		# Returns speed and sets it in set_speed
 		rpc_id(1, "get_speed")
-		# This is so only the player will have an activ camere node
+		# TODO: Player should wait until speed from server is ready
+		
+		# This is so only the master will have an activ camere and chat scene
 		var camera = preload("res://Entities/Player/PlayerCamera.tscn").instance()
 		var chat = preload("res://Globals/Chat.tscn").instance()
 		self.add_child(chat)
@@ -34,47 +44,60 @@ func _ready():
 			self.get_network_master()
 		)
 		get_node("PlayerName").text = str(player_name)
-		# initilizing puppet_position
-		puppet_position = position
 	
 
 
 func _physics_process(delta):
-	movement_loop()
+	movement_loop(delta)
 	animation_loop()
 	attack()
 
 
 	
-func movement_loop():
-	if is_network_master():
+func movement_loop(delta):
+	if is_network_master():	
 		# Gets input, value is either 0 or 1
 		move_diretion.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 		move_diretion.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-			
-		velocity = move_diretion.normalized() * speed
-		
+					
 		# To avoid sending data if the player hasen't moved since last frame
 		if move_diretion != prev_move_diretion:
-			# Updates all other connected peers about the players velocity and 
-			# position when moving. If the player is holding down a button the 
-			# Velocity is used to "predictit" the movment of the player.
-			rset_unreliable("puppet_position", position)
-			rset_unreliable("puppet_velocity", velocity)
+			moving = true
+			rset_id(1, "move_diretion", move_diretion)
+			
+			position = puppet_position
+			
+			
+		else:
+			moving = false
+
+			
 		prev_move_diretion = move_diretion
 	else:
-		# Gets position and velocity from node on server
 		position = puppet_position
 		velocity = puppet_velocity
-	
-	# move_and_slide makes the character slide along collitions
-	# uses delta automaticly, so no need to use it here
+
+	velocity = move_diretion.normalized() * speed
 	velocity = move_and_slide(velocity)
 	
-	# This for some reason removes a lot of jittering 
-	if not is_network_master():
-		puppet_position = position
 
+		
+#	velocity = move_diretion.normalized() * speed
+#	velocity = move_and_slide(velocity)
+	
+
+#	if !moving:
+#		position = puppet_position
+#	else:
+#		pass
+#		if (position - puppet_position).length() > 0.1:
+#			position = position.linear_interpolate(puppet_position, delta*10)
+	
+	
+	# Debuging/testing text below the player
+	position_label_loc.text = "loc: " + str(position)
+	position_label_pup.text = "ser: " + str(puppet_position)
+	
 	
 
 func animation_loop():

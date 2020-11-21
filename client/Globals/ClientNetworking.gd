@@ -70,8 +70,7 @@ remote func fetch_token():
 
 # Initiate game for client
 remote func start_game(player_name):
-	# rpc_id(1, "register_new_player", player_name)
-	
+	# rpc_id(1, "register_new_player", player_name)	
 	# Hides the main menu
 	get_node("/root/Menu").hide()
 	
@@ -87,10 +86,11 @@ remote func start_game(player_name):
 puppet func register_new_players(player_peer_id: int, player_name: String):
 	PlayerData.add_player(player_peer_id, player_name)
 
+# Dont thing this is ever used, should not be needed here. Is done in world script
+#puppet func remove_player(peer_id):
+#	PlayerData.remove_player(peer_id)
 
-puppet func remove_player(peer_id):
-	PlayerData.remove_player(peer_id)
-	
+
 #Recieve chat message from server and access current players chatbox
 remote func recieve_complete_chat(complete_text):
 	var player_id = get_tree().get_network_unique_id()

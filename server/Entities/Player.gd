@@ -1,38 +1,35 @@
-extends Node2D
+extends KinematicBody2D
 
-const SPEED = 500
+const SPEED = 200
 
 
-var velocity = Vector2()
-puppet var puppet_position	= Vector2()
-puppet var puppet_velocity 	= Vector2()
+puppet var move_diretion 	= Vector2.ZERO
+var prev_move_diretion 		= Vector2.ZERO
+var velocity 				= Vector2.ZERO
+
+onready var world_node = get_node("/root/World")
 
 
 func _ready():
-	# This code is not nessecery for player movment
-	# It is only to visualizer player movment on the server
-	puppet_position = position
-
+	pass
+	prev_move_diretion.x = 1
 
 func _process(delta):
-	pass
-	# This code is not nessecery for player movment
-	# It is only to visualizer player movment on the server
-	# The code is the same on the client, but without the player functionality 
-	# and movement
 	
-	# Sync position from clinet
-	position = puppet_position
-	velocity = puppet_velocity
-
-	# move the node
-	position += velocity * delta	
-
-	# This is to remove jitter. 
-	# If we dont do this the puppet player will jump/jitter between
-	# puppet_position and the position after move_and_slide
-	puppet_position = position
-
+	velocity = move_diretion.normalized() * SPEED
+	velocity = move_and_slide(velocity)
+	
+#	if move_diretion != prev_move_diretion:
+#		pass
+#	prev_move_diretion = move_diretion
+	if velocity != Vector2.ZERO:
+		for player in world_node.get_node("ConnectedPlayers").get_children():
+			rset_id(int(player.name), "puppet_position", position)
+			rset_id(int(player.name), "puppet_velocity", velocity)
+			
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		position += Vector2(5, 5)
 
 remote func get_speed():
 	rpc_id(get_tree().get_rpc_sender_id(), "set_speed", SPEED)

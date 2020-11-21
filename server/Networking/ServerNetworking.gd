@@ -35,9 +35,6 @@ func _peer_connected(peer_id):
 	print("\nCLIENT TOKEN VALIDATION\n")	
 
 func _peer_disconnected(peer_id):
-	# Removes player from server dict
-	PlayerData.remove_player(peer_id)
-	
 	# Removes player node from the world
 	get_node("/root/World").rpc("despawn_player", peer_id)
 	print("User disconnected: ", str(peer_id))
@@ -45,9 +42,10 @@ func _peer_disconnected(peer_id):
 
 func register_new_player(peer_id, player_name):
 	var player_peer_id = peer_id
-		
 	# Sends the client all currently connected users
-	PlayerData.rpc_id(player_peer_id, "get_player_list", PlayerData.get_all_players())
+	PlayerData.rpc_id(
+		player_peer_id, "get_player_list", PlayerData.get_all_players()
+	)
 	
 	# Adds the new player to a dict of all connected users
 	PlayerData.add_player(player_peer_id, player_name)
@@ -56,8 +54,10 @@ func register_new_player(peer_id, player_name):
 	rpc("register_new_players", player_peer_id, player_name)
 	
 	rpc_id(player_peer_id, "start_game", player_name)
-	
-	print("New player: " + str(player_peer_id) + " has connected as: " + str(player_name))
+
+	var player = PlayerData.get_player(player_peer_id)
+	print("New player: " + str(player["id"]) + " has connected as: " + str(player["name"]))
+
 
 # TODO: Does this need to happen for each player that connects?
 remote func initiate_world():
@@ -67,7 +67,12 @@ remote func initiate_world():
 	# Spawns connected players to newly connected player
 	# Loops over all player nodes in the world, AKA connected players
 	for player in world_node.get_node("ConnectedPlayers").get_children():
-		world_node.rpc_id(player_peer_id, "spawn_player", player.position, player.get_network_master())
+		world_node.rpc_id(
+			player_peer_id,
+			"spawn_player", 
+			player.position, 
+			player.get_network_master()
+		)
 
 	# Spawns the connected player to the world
 	world_node.rpc("spawn_player", Vector2(0,0), player_peer_id)
