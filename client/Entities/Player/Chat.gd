@@ -1,10 +1,10 @@
 extends Control
 
 
-onready var chatLog = get_node("VBoxContainer/RichTextLabel")
-onready var inputLabel = get_node("VBoxContainer/HBoxContainer/Label")
-onready var inputField = get_node("VBoxContainer/HBoxContainer/LineEdit")
-onready var SERVER_ID = Server.SERVER_ID
+onready var chatLog 	= get_node("VBoxContainer/RichTextLabel")
+onready var inputLabel 	= get_node("VBoxContainer/HBoxContainer/Label")
+onready var inputField 	= get_node("VBoxContainer/HBoxContainer/LineEdit")
+var SERVER_ID = Server.SERVER_ID
 
 
 func _ready():
@@ -30,7 +30,7 @@ func text_entered(text):
 #Send text to Server through RPC.
 func add_message(text):
 	var player_name = PlayerData.get_player_name(
-		get_tree().get_network_unique_id()
+		self.get_network_master()
 	)
 	text = "[" + str(player_name) + "]: " + text
 	rpc_id(SERVER_ID, "get_message", text)

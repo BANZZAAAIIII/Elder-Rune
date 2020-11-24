@@ -8,8 +8,6 @@ const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
 
-remote var token = "test"
-
 
 func _ready():
 	
@@ -32,7 +30,6 @@ func Connect_To_Server(jwt):
 		token = jwt
 		return true
 	else:
-		print("Failed to connect to server")
 		return false
 		
 
@@ -46,6 +43,7 @@ func _connected_ok():
 
 func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
+	# TODO: try and reconnect with server for x time
 	print("Server kicked you")
 	get_node("/root/Menu").show()
 	queue_free()
@@ -85,6 +83,7 @@ remote func start_game(player_name):
 # Adds new users that connect to dict with all connected users
 puppet func register_new_players(player_peer_id: int, player_name: String):
 	PlayerData.add_player(player_peer_id, player_name)
+
 
 # Dont thing this is ever used, should not be needed here. Is done in world script
 #puppet func remove_player(peer_id):
