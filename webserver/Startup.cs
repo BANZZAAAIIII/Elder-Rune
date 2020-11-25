@@ -9,7 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using webserver.Models;
 
+
 using webserver.Middelware;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using webserver.Services;
 
 namespace webserver
 {
@@ -32,7 +39,10 @@ namespace webserver
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()                
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();            
+            services.AddControllersWithViews();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddRazorPages();
             services.AddWebSocketManager(); // Initialize an instance of the websocket manager
         }
@@ -82,5 +92,6 @@ namespace webserver
                 endpoints.MapRazorPages();
             });
         }
-    }        
+
+    }
 }
