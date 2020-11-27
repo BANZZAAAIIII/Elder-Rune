@@ -42,6 +42,8 @@ namespace webserver.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginModel model) 
         {
+
+            _logger.LogInformation(model.ToString());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -56,7 +58,7 @@ namespace webserver.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User logged in");
+                _logger.LogInformation($"User {user} logged into {model.World}");
               
                 return Ok("You Logged in");
             }

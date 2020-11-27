@@ -10,7 +10,8 @@ screenshots
 *.pyc
 *.swp
 *.user
-
+*.cer
+*.crt
   
 # Godot-specific ignores
 .import/
