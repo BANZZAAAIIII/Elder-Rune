@@ -4,11 +4,12 @@ extends Control
 onready var chatLog = get_node("VBoxContainer/RichTextLabel")
 onready var inputLabel = get_node("VBoxContainer/HBoxContainer/Label")
 onready var inputField = get_node("VBoxContainer/HBoxContainer/LineEdit")
-var SERVER_ID = Server.SERVER_ID
+onready var SERVER_ID = Server.SERVER_ID
 
 
 func _ready():
 	inputField.connect("text_entered", self, "text_entered")
+	
 	
 #Activates input field if Enter is pressed
 func _input(event):

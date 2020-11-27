@@ -8,13 +8,10 @@ const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
 
-var client_name = "Anders"
+var username = ""
 
 
 func _ready():
-		# Create client & connect to server
-	Connect_To_Server()
-	
 	
 	# Signals
 	get_tree().connect("connection_failed", self, "_connected_fail")
@@ -24,7 +21,7 @@ func _ready():
 	get_tree().connect("network_peer_disconnected", self, "_peer_disconnected")
 
 # Connect to server
-func Connect_To_Server():
+func Connect_To_Server(usrname):
 	
 	# Create client
 	network = NetworkedMultiplayerENet.new()
@@ -32,18 +29,21 @@ func Connect_To_Server():
 	if result == OK:
 		get_tree().set_network_peer(network)
 		print("Connecting to server.....")
+		username = usrname
 		return true
 	else:
 		print("Failed to connect to server")
 		return false
-	
+		
 
 func _connected_fail():
 	print("Failed to connect")
+	
 
 func _connected_ok():
 	print("Succesfully connected")
-	
+	register_new_player(username)
+
 
 func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
