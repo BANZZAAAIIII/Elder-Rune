@@ -10,9 +10,6 @@ namespace webserver.Models
     public class ApplicationUser : IdentityUser 
     {
         
-        public string GamerTag { get; set; }
-
-
-        public List<DevBlog> DevBlogs { get; set; }
+       public List<DevBlog> DevBlogs { get; set; }
     }
 }

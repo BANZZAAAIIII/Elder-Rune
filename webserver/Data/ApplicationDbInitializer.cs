@@ -23,9 +23,8 @@ namespace webserver.Data
             // Create an administrator
             var admin = new ApplicationUser 
             {
-                UserName = "admin@uia.no",
-                Email = "admin@uia.no",
-                GamerTag = "Administrator",
+                UserName = "admin",
+                Email = "admin@uia.no",                
                 EmailConfirmed = true
             };
 
@@ -39,9 +38,8 @@ namespace webserver.Data
             {
                 var user = new ApplicationUser
                 {
-                    UserName = $"user{i}@uia.no",
-                    Email = $"user{i}@uia.no",
-                    GamerTag = $"user{i}",
+                    UserName = $"user{i}",
+                    Email = $"user{i}@uia.no",                    
                     EmailConfirmed = true
                 };
 
