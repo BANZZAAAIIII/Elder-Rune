@@ -2,9 +2,10 @@ extends Node
 
 
 var network
-const SERVER_PORT = 6008
-const MAX_PLAYERS = 100
-const SERVER_ID := 1
+const SERVER_PORT 	= 6008
+const MAX_PLAYERS 	= 100
+const SERVER_ID 	:= 1
+
 
 
 func _ready():
@@ -19,6 +20,7 @@ func Start_Server():
 	get_tree().connect("network_peer_disconnected", self, "_peer_disconnected")
 
 	network = NetworkedMultiplayerENet.new()
+	network.always_ordered = true
 
 	var result = network.create_server(SERVER_PORT, MAX_PLAYERS)
 	
@@ -80,6 +82,7 @@ remote func initiate_world():
 #Return chat message to ClientNetworking	
 func return_chat_message(complete_text):
 	rpc("recieve_complete_chat", complete_text)
+
 	
 # Add token from client to list
 remote func set_token(c_token):

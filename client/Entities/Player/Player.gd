@@ -3,8 +3,8 @@ extends KinematicBody2D
 
 # Movement vars
 var speed 				= 0	# Assigned by server
-var move_diretion 		= Vector2.ZERO
-var prev_move_diretion 	= Vector2.ZERO
+var move_direction		= Vector2.ZERO
+var prev_move_direction	= Vector2.ZERO
 var velocity 			= Vector2.ZERO
 
 # Movement vars for puppet node
@@ -34,11 +34,11 @@ func _ready():
 		# This is so only the master will have an activ camere and chat scene
 		var camera = preload("res://Entities/Player/PlayerCamera.tscn").instance()
 		var chat = preload("res://Entities/Player/Chat.tscn").instance()
+		var ping = preload("res://Entities/Player/ServerPing.tscn").instance()
+		self.add_child(ping)
 		self.add_child(chat)
 		self.add_child(camera)
 		
-
-
 		
 	# Sets player name over character
 	var player_name = PlayerData.get_player_name(
@@ -57,39 +57,40 @@ func _physics_process(delta):
 func movement_loop(delta):
 	if is_network_master():	
 		# Gets input, value is either 0 or 1
-		move_diretion.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-		move_diretion.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-			
-			
-		# This is just to try and give a litter faster feedback when a player moves
-		# Does not realy work as prodicting the movement as the linear_interpolate
-		# later will pull the player back to last known server_posistion
-		velocity = move_diretion.normalized() * speed
-		move_and_slide(velocity)
-			
-			
+		move_direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+		move_direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+
+		
 		time += delta
 		# Will send until server has acknowledg that the move_direction has changed
 		if !move_acknowledged and time > TICK_RATE:
 			time = 0
-			rset_unreliable_id(Server.SERVER_ID, "move_diretion", move_diretion)
+			rset_unreliable_id(Server.SERVER_ID, "move_direction", move_direction)
+		elif move_direction != prev_move_direction:
+			rset_unreliable_id(Server.SERVER_ID, "move_direction", move_direction)
+			move_acknowledged = false # Will now start to send until acknowledged		
 			
-		elif move_diretion != prev_move_diretion:
-			rset_unreliable_id(Server.SERVER_ID, "move_diretion", move_diretion)
-			move_acknowledged = false # Will now start to send until acknowledged								
-		prev_move_diretion = move_diretion
+									
+		prev_move_direction = move_direction
 	else:
 		# This is realy just to get change_sprite_direction() to work
 		velocity = server_velocity
-		
-		
+	
+	
 	# Synces the player smoothly with the position from server
 	if (position - server_position).length() > 1:
+#		position = server_position
 		position = position.linear_interpolate(server_position, delta*10)
 	else:
 		position = server_position
-		
-			
+
+	
+	# This is just to try and give a little faster feedback when a player moves
+	# Does not realy work as prodicting the movement as the linear_interpolate
+	# later will pull the player back to last known server_posistion
+	velocity = move_direction.normalized() * speed * 0.5
+	move_and_slide(velocity)
+	
 						
 remote func process_movement(s_movement):
 	server_position = s_movement[0]
@@ -110,7 +111,7 @@ func position_disp():
 		
 func animation_loop():
 	# Checks of the player is moving or not and plays appropriate animation
-	if move_diretion != Vector2.ZERO:
+	if move_direction != Vector2.ZERO:
 		get_node("PlayerSprite/SpriteAnimation").play("Walk")
 		change_sprite_direction()
 	else:

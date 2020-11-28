@@ -12,5 +12,10 @@ puppet func spawn_player(player_pos, peer_id):
 	get_node("ConnectedPlayers").add_child(player_instance)
 
 puppet func despawn_player(peer_id):
+	# Removes player from client dict
 	PlayerData.remove_player(peer_id)
-	get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()
+	
+	# Gets the player node with the uniqe peer id and removes it
+	var disconnected_player = get_node("ConnectedPlayers").get_node(str(peer_id))
+	if disconnected_player:
+		disconnected_player.queue_free()

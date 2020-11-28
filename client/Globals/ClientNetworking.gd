@@ -1,12 +1,13 @@
 extends Node
 
-# Create a connection to the server
-
-
 var network
 const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
+
+# For ping
+var ping_start	= 0
+var ping		= 0
 
 
 func _ready():
@@ -23,6 +24,7 @@ func Connect_To_Server(jwt):
 	
 	# Create client
 	network = NetworkedMultiplayerENet.new()
+	network.always_ordered = true
 	var result = network.create_client(SERVER_IP, SERVER_PORT)
 	if result == OK:
 		get_tree().set_network_peer(network)
@@ -45,8 +47,8 @@ func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
 	# TODO: try and reconnect with server for x time
 	print("Server kicked you")
-	get_node("/root/Menu").show()
 	queue_free()
+	get_node("/root/Menu").show()
 
 # Triggers when a new player connects to server
 func _peer_connected(peer_id):
@@ -97,3 +99,5 @@ remote func recieve_complete_chat(complete_text):
 	print_debug(path)
 	get_node(path)
 	get_node(path).print_chat_message(complete_text)
+	
+	
