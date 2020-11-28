@@ -29,9 +29,9 @@ func _physics_process(delta):
 	# Lowers the tick rate if the player isn't moving
 	# This is to not send unnecessary data and to make sure the player has the latest position
 	if move_direction == Vector2.ZERO:
-		tick_rate = 0.5
+		tick_rate = 0.1
 	else:
-		tick_rate = 0.01
+		tick_rate = 0.1
 		
 	
 	if time > tick_rate:
