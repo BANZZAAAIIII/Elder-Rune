@@ -22,7 +22,7 @@ func add_player(player_id: int, player_name: String):
 
 # Remove a player
 func remove_player(player_id: int):
-	if __players[player_id]:
+	if __players.has(player_id):
 		__players.erase(player_id)
 	else:
 		print_debug("Player with ID:" + str(player_id) + " wasnt found")

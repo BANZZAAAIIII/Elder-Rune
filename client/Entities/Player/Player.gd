@@ -9,9 +9,10 @@ var moved				= false
 var velocity 			= Vector2.ZERO
 
 # Movement vars from server
-var server_position 			= [Vector2()]
-var last_server_position 		= Vector2()
-var server_velocity				= Vector2()
+var server_position 			= [Vector2.ZERO]
+var last_server_position 		= Vector2.ZERO
+var server_velocity				= Vector2.ZERO
+var divergence:float			= 0
 remote var move_acknowledged	= false
 
 # Testing
@@ -63,48 +64,61 @@ func _physics_process(delta):
 	
 func movement_loop(delta):
 	if is_network_master():	
+
+		# This is just to try and give a little faster feedback when a player moves
+		# Does not realy work as prodicting the movement as the linear_interpolate
+		# later will pull the player back to last known server_posistion
+		velocity = move_direction.normalized() * speed
+		# warning-ignore:return_value_discarded
+		move_and_slide(velocity) 
+		
 		# Gets input, value is either 0 or 1
 		move_direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 		move_direction.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 		
 		if move_direction != prev_move_direction:
 			moved = true
-			timer_timeout = ping + 2*delta*1000
-			print("ping : " + str(ping))
-			print("timerout: " + str(timer_timeout))
+			timer_timeout = ping + 2*delta * 1000
+			print(delta * 1000)
 		else:
 			moved = false
 		prev_move_direction = move_direction
 		
-		
+#		rpc_unreliable_id(Server.SERVER_ID, "get_move", move_direction, OS.get_system_time_msecs())
 		time += delta
 		# Will send until server has acknowledg that the move_direction has changed
 		if !move_acknowledged and time > TICK_RATE:
 			time = 0
-			rset_unreliable_id(Server.SERVER_ID, "move_direction", move_direction)
+			var clienttime = OS.get_system_time_msecs()
+			rpc_unreliable_id(Server.SERVER_ID, "get_move", move_direction, clienttime)
 		elif moved:
-			rset_unreliable_id(Server.SERVER_ID, "move_direction", move_direction)
+			var clienttime = OS.get_system_time_msecs()
+			rpc_unreliable_id(Server.SERVER_ID, "get_move", move_direction, clienttime)
 			move_acknowledged = false # Will now start to send until acknowledged		
-	
+		
 		# Converts detla to msec
 		timer_time += delta * 1000
-		if timer_time > timer_timeout or server_position.size() > 1:
-#			print("blarg " + str(OS.get_ticks_msec()))
+		if timer_time > timer_timeout:
 			# Synces the player smoothly with the position from server
-			if (position - server_position.front()).length() > 1:
-				position = position.linear_interpolate(server_position.front(), delta * 5)
-				print("blarg " + str(OS.get_ticks_msec()))
-				
+			divergence = (position - server_position.front()).length()
+			if divergence > 1:
+				divergence = clamp(divergence * 2, 5, 20)
+				position = position.linear_interpolate(server_position.front(), delta * divergence)
 			else:
 				position = server_position.front()
+
 			
 			timer_time = 0
+			timer_timeout = 0
 			if server_position.size() != 1:
 				server_position.pop_back()
 		
-		if move_direction == Vector2.ZERO:
-			position = position.linear_interpolate(server_position.front(), delta * 10)
+		else:
+			print("not syncing : " + str(OS.get_system_time_msecs()))
+			
 		
+#		position = position.linear_interpolate(server_position.front(), delta)
+			
 	else:
 		# This is realy just to get change_sprite_direction() to work on puppet players
 		velocity = server_velocity
@@ -113,17 +127,16 @@ func movement_loop(delta):
 			position = position.linear_interpolate(server_position.front(), delta*10)
 		else:
 			position = server_position.front()
-	
-	# This is just to try and give a little faster feedback when a player moves
-	# Does not realy work as prodicting the movement as the linear_interpolate
-	# later will pull the player back to last known server_posistion
-	velocity = move_direction.normalized() * speed * 0.8
-	# warning-ignore:return_value_discarded
-	move_and_slide(velocity) 
-	
+
+#	print("pos : " + str(position) + " \t move : " + str(move_direction)
+#		+ "\nser_pos : " + str(server_position) 
+#		+ "\n ------------------------ "
+#	)
+#
 						
 remote func process_movement(s_movement):
 	server_position.push_front(s_movement[0]) 
+#	server_position.push_front(Vector2.ZERO) 
 	server_velocity = s_movement[1]
 
 

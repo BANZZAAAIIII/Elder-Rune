@@ -24,7 +24,6 @@ func Connect_To_Server(jwt):
 	
 	# Create client
 	network = NetworkedMultiplayerENet.new()
-	network.always_ordered = true
 	var result = network.create_client(SERVER_IP, SERVER_PORT)
 	if result == OK:
 		get_tree().set_network_peer(network)
@@ -36,17 +35,16 @@ func Connect_To_Server(jwt):
 		
 
 func _connected_fail():
-	print("Failed to connect")
-	
+	print_debug("Failed to connect")
 
 func _connected_ok():
-	print("Succesfully connected")
+	print_debug("Succesfully connected")
 	
 
 func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
 	# TODO: try and reconnect with server for x time
-	print("Server kicked you")
+	print_debug("Server kicked you")
 	queue_free()
 	get_node("/root/Menu").show()
 

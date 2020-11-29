@@ -21,7 +21,6 @@ func Start_Server():
 
 	network = NetworkedMultiplayerENet.new()
 	network.always_ordered = true
-
 	var result = network.create_server(SERVER_PORT, MAX_PLAYERS)
 	
 	if result == OK:

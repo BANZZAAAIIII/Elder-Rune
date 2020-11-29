@@ -68,3 +68,5 @@ __meta__ = {
 
 [node name="ServerPing" type="Node2D" parent="."]
 script = ExtResource( 4 )
+
+[node name="SyncPositionTimer" type="Timer" parent="."]
