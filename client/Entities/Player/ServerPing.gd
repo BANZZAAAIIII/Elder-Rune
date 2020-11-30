@@ -24,7 +24,7 @@ func _ready():
 		+"\nAvg ping : "
 	)
 
-
+# Starts the ping to the server 
 func _on_PingTimer_timeout():
 	time = OS.get_ticks_msec()	
 	rpc_unreliable_id(Server.SERVER_ID, "ping")

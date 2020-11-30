@@ -31,7 +31,6 @@ func remove_player(player_id: int):
 func get_player_name(peer_id):
 	# This returns the ID as well, usefull for debugging	
 #	return players[peer_id]
-	# TODO to this better
 	return __players[peer_id][PLAYER_NAME]
 	
 

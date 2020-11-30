@@ -9,6 +9,9 @@ const SERVER_ID := 1
 var ping_start	= 0
 var ping		= 0
 
+#
+var connected 	= false
+
 
 func _ready():
 	
@@ -36,10 +39,11 @@ func Connect_To_Server(jwt):
 
 func _connected_fail():
 	print_debug("Failed to connect")
+	connected = false
 
 func _connected_ok():
 	print_debug("Succesfully connected")
-	
+	connected = true
 
 func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
@@ -60,6 +64,7 @@ func _peer_disconnected(peer_id):
 	pass
 #	print_debug(str(peer_id) + " disconnected")
 #	print("")
+
 
 # Sends the token to the game server when asked for
 remote func fetch_token():

@@ -70,3 +70,4 @@ __meta__ = {
 script = ExtResource( 4 )
 
 [node name="SyncPositionTimer" type="Timer" parent="."]
+[connection signal="timeout" from="SyncPositionTimer" to="." method="_on_SyncPositionTimer_timeout"]
