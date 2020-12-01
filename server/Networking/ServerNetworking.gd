@@ -9,7 +9,7 @@ const SERVER_ID := 1
 func _ready():
 	Start_Server()
 
-func Start_Server() -> bool:
+func Start_Server():
 	# Signals
 	# Will fire (call method to the right) when player connects or disconnects from server
 	get_tree().connect("network_peer_connected", self, "_peer_connected")
@@ -21,11 +21,10 @@ func Start_Server() -> bool:
 	
 	if result == OK:
 		get_tree().set_network_peer(network)
-		print_debug("server Started")
-		return true
+		print_debug("Server Started" )
 	else:
 		print_debug("Failed to start server: %d" % result)
-		return false
+		
 
 
 # Runs when a peer connects to the server

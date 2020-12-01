@@ -12,6 +12,7 @@ screenshots
 *.user
 *.cer
 *.crt
+*.resx
   
 # Godot-specific ignores
 .import/

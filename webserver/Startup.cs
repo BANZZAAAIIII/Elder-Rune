@@ -16,6 +16,10 @@ using webserver.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
+using webserver.Middelware;
 
 namespace webserver
 {
@@ -40,6 +44,7 @@ namespace webserver
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddWebSocketManager(); // Initialize an instance of the websocket manager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +66,21 @@ namespace webserver
 
             app.UseRouting();
 
+            // TODO: Check where websocket should be in the pipeline
+            // TODO: Create pipline that checks the first http request for origin header
+            // TODO: Create websocket authentication
+            // TODO: Create game server model, make first http request handle creation of the object
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120), // How often server will ping websocket clients
+                ReceiveBufferSize = 4 * 1024, // Buffer size of data
+
+            };
+            // webSocketOptions.AllowedOrigins.Add("http://www.websocket.org");
+            //webSocketOptions.AllowedOrigins.Add("127.0.0.1"); // Restrict connection to this address only, can be faked
+            app.UseWebSockets(webSocketOptions); // Communication between webserver and godot game server 
+            app.UseWebSocketServer(); // Call websocket middelware
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -72,5 +92,5 @@ namespace webserver
                 endpoints.MapRazorPages();
             });
         }
-    }
+    }        
 }

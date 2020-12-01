@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using webserver.Models;
 using Microsoft.IdentityModel.JsonWebTokens;
+using webserver.Middelware;
+using System.Net.WebSockets;
+using System.Text;
+using System.Threading;
 
 namespace webserver.Controllers
 {
@@ -15,17 +19,20 @@ namespace webserver.Controllers
     [ApiController]
     public class ApiLoginController : ControllerBase
     {
+        
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ApiLoginController> _logger;
+        private WebSocketConnectionManager _webSocket;
 
 
         // Constructor
-        public ApiLoginController(ILogger<ApiLoginController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public ApiLoginController(ILogger<ApiLoginController> logger, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, WebSocketConnectionManager webSocket)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _webSocket = webSocket;
         }
 
         // Test connection
@@ -59,6 +66,9 @@ namespace webserver.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation($"User {user} logged into {model.World}");
+                WebSocket webSocket = _webSocket.FindSocket();
+                var buffer = Encoding.UTF8.GetBytes("Login: " + user);
+                await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
               
                 return Ok("You Logged in");
             }
