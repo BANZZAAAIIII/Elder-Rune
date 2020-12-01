@@ -28,6 +28,7 @@ func Connect_To_Server(jwt):
 	# Create client
 	network = NetworkedMultiplayerENet.new()
 	var result = network.create_client(SERVER_IP, SERVER_PORT)
+	network.always_ordered = true
 	if result == OK:
 		get_tree().set_network_peer(network)
 		print("Connecting to server.....")

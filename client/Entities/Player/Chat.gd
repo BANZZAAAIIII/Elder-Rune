@@ -30,7 +30,7 @@ func text_entered(text):
 #Send text to Server through RPC.
 func add_message(text):
 	var player_name = PlayerData.get_player_name(
-		self.get_network_master()
+		get_tree().get_network_unique_id()
 	)
 	text = "[" + str(player_name) + "]: " + text
 	rpc_id(SERVER_ID, "get_message", text)
