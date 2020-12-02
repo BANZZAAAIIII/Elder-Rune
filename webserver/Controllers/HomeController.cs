@@ -40,6 +40,8 @@ namespace webserver.Controllers
             return await Task.Run(() => View());
         }
         
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Terms()
         {
             return await Task.Run(() => View());
