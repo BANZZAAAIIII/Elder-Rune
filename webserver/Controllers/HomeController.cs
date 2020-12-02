@@ -39,6 +39,11 @@ namespace webserver.Controllers
         {
             return await Task.Run(() => View());
         }
+        
+        public async Task<IActionResult> Terms()
+        {
+            return await Task.Run(() => View());
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Error()
