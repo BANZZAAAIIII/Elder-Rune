@@ -1,24 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using webserver.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using webserver.Models;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using System.Net.WebSockets;
-using Microsoft.AspNetCore.Http;
-using System.Threading;
+
 using webserver.Middelware;
 
 namespace webserver
@@ -40,9 +30,9 @@ namespace webserver
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
+                .AddRoles<IdentityRole>()                
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews();            
             services.AddRazorPages();
             services.AddWebSocketManager(); // Initialize an instance of the websocket manager
         }

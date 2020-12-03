@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.WebSockets;
 using System.Text;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace webserver.Middelware
 {
@@ -39,11 +40,11 @@ namespace webserver.Middelware
                     await Echo(webSocket, ConnectionID); // return the first message with their connection ID
                     await RecieveMessage(webSocket, async (result, buffer) => // Handle the incomming websocket message
                     {
-                        if(result.MessageType == WebSocketMessageType.Text)
+                        if(result.MessageType == WebSocketMessageType.Text) // Runs when the message recieved is of text type
                         {
                             _logger.LogDebug("Recieved a websocket message of type text");
                             _logger.LogDebug($"Message: {Encoding.UTF8.GetString(buffer, 0, result.Count)}"); // Print message to console for debugging
-
+                            return;
                         }
                         else if(result.MessageType == WebSocketMessageType.Close) // Remove websocket from dictionary and close the connection
                         {
@@ -70,6 +71,8 @@ namespace webserver.Middelware
         }
 
         // Reads the incomming websocket message
+        // TODO: Handle sudden disconnection
+        // TODO: Handle JWT from game server
        private async Task RecieveMessage(WebSocket socket, Action<WebSocketReceiveResult, byte[]> handleMessage)
         {
             var buffer = new byte[1024 * 4];
@@ -79,6 +82,18 @@ namespace webserver.Middelware
                 handleMessage(result, buffer);
             }
         }
+
+
+        // TODO: Handle larger than 1024*4 message sizes by slizing them into multiple messages
+        public async Task<string> SendMessage(List<Claim> claims, WebSocket socket)
+        {
+            string token = Token(claims);
+            var buffer = Encoding.UTF8.GetBytes(token);
+            await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+            return token;
+        }
+
+        // Prints out the request parameters from the HTTP request
         public void WriteRequestParam(HttpContext context)
         {
             Console.WriteLine("Request Method: " + context.Request.Method);
@@ -91,6 +106,27 @@ namespace webserver.Middelware
                     Console.WriteLine("--> " + h.Key + " : " + h.Value);
                 }
             }
+        }
+        private string Token(List<Claim> claims)
+        {
+
+            string key = "This key must be secured";
+
+            var issuer = "https:localhost:5001";
+            var audience = "Godot Game server";
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            // Create token object
+            var token = new JwtSecurityToken(
+                issuer,
+                audience,
+                claims,
+                expires: DateTime.Now.AddSeconds(30),
+                signingCredentials: credentials
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

@@ -35,10 +35,10 @@ func _on_LoginButton_pressed():
 	if error != OK:
 		push_error("Http request got an error")
 
-# TODO: Maybe mode the connection failed and successfull signals here instead of in singelton
+# TODO: Maybe move the connection failed and successfull signals here instead of in singelton
 func _on_request_completed(result, response_code, headers, body):
 	if response_code == 200:
-		Server.Connect_To_Server(username.text) # Connect to game server
+		Server.Connect_To_Server(body.get_string_from_utf8()) # Connect to game server
 	
 # TODO: Delete this: Allows for testing without running aspnet server
 func _on_TempLogin_pressed():

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using webserver.Models;
-using Microsoft.IdentityModel.JsonWebTokens;
 using webserver.Middelware;
-using System.Net.WebSockets;
 using System.Text;
-using System.Threading;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using webserver.Utility;
+
 
 namespace webserver.Controllers
 {
@@ -19,11 +19,11 @@ namespace webserver.Controllers
     [ApiController]
     public class ApiLoginController : ControllerBase
     {
-        
+
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ApiLoginController> _logger;
-        private WebSocketConnectionManager _webSocket;
+        private readonly WebSocketConnectionManager _webSocket;
 
 
         // Constructor
@@ -47,7 +47,7 @@ namespace webserver.Controllers
         // Recieves a login model
         // POst api/Login
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginModel model) 
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
 
             _logger.LogInformation(model.ToString());
@@ -56,28 +56,52 @@ namespace webserver.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await this._userManager.FindByNameAsync(model.UserName); 
-            if(user == null)
+            var user = await this._userManager.FindByNameAsync(model.UserName);
+            if (user == null)
             {
                 return Unauthorized();
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
             if (result.Succeeded)
-            {
+            {                
                 _logger.LogInformation($"User {user} logged into {model.World}");
-                WebSocket webSocket = _webSocket.FindSocket();
-                var buffer = Encoding.UTF8.GetBytes("Login: " + user);
-                await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
-              
-                return Ok("You Logged in");
+
+                List<Claim> claims = new List<Claim>();
+                claims.Add(new Claim("Login", "true"));
+                claims.Add(new Claim("user", user.UserName));
+                claims.Add(new Claim("guid", Guid.NewGuid().ToString()));                
+                var sender = new WebSocketUtility();                
+                string token = await sender.SendMessage(claims, _webSocket.FindSocket());
+                return Ok(token);
             }
-           else
+            else
             {
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return BadRequest(ModelState);
             }
+        }
 
+       private string LoginToken(List<Claim> claims)
+        {
+            
+            string key = "This key must be secured";
+
+            var issuer = "https:localhost:5001";
+            var audience = "Godot Game server";
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);                  
+
+            // Create token object
+            var token = new JwtSecurityToken(
+                issuer,
+                audience,
+                claims,
+                expires: DateTime.Now.AddSeconds(30),
+                signingCredentials: credentials
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

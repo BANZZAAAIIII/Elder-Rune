@@ -8,7 +8,7 @@ const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
 
-var username = ""
+remote var token = ""
 
 
 func _ready():
@@ -21,7 +21,7 @@ func _ready():
 	get_tree().connect("network_peer_disconnected", self, "_peer_disconnected")
 
 # Connect to server
-func Connect_To_Server(usrname):
+func Connect_To_Server(jwt):
 	
 	# Create client
 	network = NetworkedMultiplayerENet.new()
@@ -29,7 +29,7 @@ func Connect_To_Server(usrname):
 	if result == OK:
 		get_tree().set_network_peer(network)
 		print("Connecting to server.....")
-		username = usrname
+		token = jwt
 		return true
 	else:
 		print("Failed to connect to server")
@@ -42,8 +42,7 @@ func _connected_fail():
 
 func _connected_ok():
 	print("Succesfully connected")
-	register_new_player(username)
-
+	
 
 func _server_disconnected():
 	# TODO: Despawn/disconect the player localy
@@ -64,8 +63,12 @@ func _peer_disconnected(peer_id):
 #	print_debug(str(peer_id) + " disconnected")
 #	print("")
 
+# Sends the token to the game server when asked for
+remote func fetch_token():
+	rpc_id(1, "send_token", token)
 
-func register_new_player(player_name):
+
+remote func register_new_player(player_name):
 	rpc_id(1, "register_new_player", player_name)
 	
 	# Hides the main menu
