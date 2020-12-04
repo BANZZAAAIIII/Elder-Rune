@@ -78,20 +78,39 @@ namespace webserver.Middelware
             var buffer = new byte[1024 * 4];
             while(socket.State == WebSocketState.Open) // As long as connection is open, listen for new messages
             {
-                var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer), cancellationToken: CancellationToken.None);
-                handleMessage(result, buffer);
+                try
+                {
+                    var result = await socket.ReceiveAsync(buffer: new ArraySegment<byte>(buffer), cancellationToken: CancellationToken.None);
+                    handleMessage(result, buffer);
+                }              
+
+                catch(WebSocketException e) // General error catch
+                {
+                    _logger.LogError("Error: " + e.Message);
+                    if(e.WebSocketErrorCode == WebSocketError.ConnectionClosedPrematurely)
+                    {
+                        var result = CloseSocketAsync(socket);
+                    }
+                }
             }
+        }
+
+        private async Task CloseSocketAsync(WebSocket socket)
+        {
+            _manager.RemoveSocket(socket); // Remove socket connection from manager
+            await socket.CloseAsync(WebSocketCloseStatus.ProtocolError, "Lost connection", CancellationToken.None);
         }
 
 
         // TODO: Handle larger than 1024*4 message sizes by slizing them into multiple messages
-        public async Task<string> SendMessage(List<Claim> claims, WebSocket socket)
-        {
-            string token = Token(claims);
-            var buffer = Encoding.UTF8.GetBytes(token);
-            await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
-            return token;
-        }
+        // TODO: Should we have a websocket utility class or keep all these functions here?
+        // public async Task<string> SendMessage(List<Claim> claims, WebSocket socket)
+        // {
+        //     string token = Token(claims);
+        //     var buffer = Encoding.UTF8.GetBytes(token);
+        //     await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+        //     return token;
+        // }
 
         // Prints out the request parameters from the HTTP request
         public void WriteRequestParam(HttpContext context)
@@ -107,26 +126,27 @@ namespace webserver.Middelware
                 }
             }
         }
-        private string Token(List<Claim> claims)
-        {
-
-            string key = "This key must be secured";
-
-            var issuer = "https:localhost:5001";
-            var audience = "Godot Game server";
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            // Create token object
-            var token = new JwtSecurityToken(
-                issuer,
-                audience,
-                claims,
-                expires: DateTime.Now.AddSeconds(30),
-                signingCredentials: credentials
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        // TODO: Should we have a websocket utility class or keep all these functions here?
+       // private string Token(List<Claim> claims)
+       // {
+       //
+       //     string key = "This key must be secured";
+       //
+       //     var issuer = "https:localhost:5001";
+       //     var audience = "Godot Game server";
+       //     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+       //     var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+       //
+       //     // Create token object
+       //     var token = new JwtSecurityToken(
+       //         issuer,
+       //         audience,
+       //         claims,
+       //         expires: DateTime.Now.AddSeconds(30),
+       //         signingCredentials: credentials
+       //         );
+       //
+       //     return new JwtSecurityTokenHandler().WriteToken(token);
+       // }
     }
 }

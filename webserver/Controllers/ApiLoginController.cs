@@ -67,8 +67,7 @@ namespace webserver.Controllers
             {                
                 _logger.LogInformation($"User {user} logged into {model.World}");
 
-                List<Claim> claims = new List<Claim>();
-                claims.Add(new Claim("Login", "true"));
+                List<Claim> claims = new List<Claim>();                
                 claims.Add(new Claim("user", user.UserName));
                 claims.Add(new Claim("guid", Guid.NewGuid().ToString()));                
                 var sender = new WebSocketUtility();                
@@ -80,28 +79,6 @@ namespace webserver.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return BadRequest(ModelState);
             }
-        }
-
-       private string LoginToken(List<Claim> claims)
-        {
-            
-            string key = "This key must be secured";
-
-            var issuer = "https:localhost:5001";
-            var audience = "Godot Game server";
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);                  
-
-            // Create token object
-            var token = new JwtSecurityToken(
-                issuer,
-                audience,
-                claims,
-                expires: DateTime.Now.AddSeconds(30),
-                signingCredentials: credentials
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        }       
     }
 }

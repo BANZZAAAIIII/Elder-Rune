@@ -8,7 +8,7 @@ const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
 
-remote var token = ""
+remote var token = "test"
 
 
 func _ready():
@@ -65,11 +65,12 @@ func _peer_disconnected(peer_id):
 
 # Sends the token to the game server when asked for
 remote func fetch_token():
-	rpc_id(1, "send_token", token)
+	print(token)
+	rpc_id(1, "set_token", token)
 
-
-remote func register_new_player(player_name):
-	rpc_id(1, "register_new_player", player_name)
+# Initiate game for client
+remote func start_game(player_name):
+	# rpc_id(1, "register_new_player", player_name)
 	
 	# Hides the main menu
 	get_node("/root/Menu").hide()

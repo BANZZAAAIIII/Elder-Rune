@@ -13,4 +13,5 @@ puppet func spawn_player(player_pos, peer_id):
 	get_node("ConnectedPlayers").add_child(player_instance)
 
 puppet func despawn_player(peer_id):
-	get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()
+	if(get_node("ConnectedPlayers").get_node(str(peer_id))):
+		get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()

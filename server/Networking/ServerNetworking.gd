@@ -6,7 +6,10 @@ const SERVER_PORT = 6008
 const MAX_PLAYERS = 100
 const SERVER_ID := 1
 
+
 func _ready():
+	Token.connect("ValidatePlayer", self, "_On_Client_Validated")
+	
 	Start_Server()
 
 func Start_Server():
@@ -24,14 +27,12 @@ func Start_Server():
 		print_debug("Server Started" )
 	else:
 		print_debug("Failed to start server: %d" % result)
-		
 
 
 # Runs when a peer connects to the server
 func _peer_connected(peer_id):
-	# printt("user connected: ", str(peer_id))
-	pass
-
+	rpc_id(peer_id, "fetch_token") # Get client token
+	print("\nCLIENT TOKEN VALIDATION\n")	
 
 func _peer_disconnected(peer_id):
 	# Removes player from server dict
@@ -42,9 +43,9 @@ func _peer_disconnected(peer_id):
 	print("User disconnected: ", str(peer_id))
 
 
-remote func register_new_player(player_name):
-	var player_peer_id = get_tree().get_rpc_sender_id()
-	
+func register_new_player(peer_id, player_name):
+	var player_peer_id = peer_id
+		
 	# Sends the client all currently connected users
 	PlayerData.rpc_id(player_peer_id, "get_player_list", PlayerData.get_all_players())
 	
@@ -54,9 +55,11 @@ remote func register_new_player(player_name):
 	# Tells other conected peers to register the new player
 	rpc("register_new_players", player_peer_id, player_name)
 	
+	rpc_id(player_peer_id, "start_game", player_name)
+	
 	print("New player: " + str(player_peer_id) + " has connected as: " + str(player_name))
 
-
+# TODO: Does this need to happen for each player that connects?
 remote func initiate_world():
 	var player_peer_id = get_tree().get_rpc_sender_id()
 	var world_node = get_node("/root/World")
@@ -73,4 +76,14 @@ remote func initiate_world():
 func return_chat_message(complete_text):
 	rpc("recieve_complete_chat", complete_text)
 	
-	
+# Add token from client to list
+remote func set_token(c_token):
+	var peer_id = get_tree().get_rpc_sender_id()
+	Token.addClient(peer_id, c_token)
+
+
+func _On_Client_Validated(peer_id, username, validation): # Runs when tokens have been validated
+	if(validation):
+		register_new_player(peer_id, username) # Start login process
+	else:
+		network.disconnect_peer(peer_id, false) # TODO: Should we disconnect immidiatly without flushing messages?

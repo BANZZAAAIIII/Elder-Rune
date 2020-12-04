@@ -37,7 +37,7 @@ namespace webserver.Utility
                 issuer,
                 audience,
                 claims,
-                expires: DateTime.Now.AddSeconds(30),
+                expires: DateTime.Now,
                 signingCredentials: credentials
                 );
 

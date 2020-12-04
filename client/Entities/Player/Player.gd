@@ -103,4 +103,4 @@ func attack():
 
 
 remote func set_speed(s_speed):
-	speed = 300
+	speed = s_speed

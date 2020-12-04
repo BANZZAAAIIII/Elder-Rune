@@ -58,11 +58,9 @@ func _on_Websocket_connected(proto = ""):
 
 func _on_Websocket_recieved():
 	var token = client.get_peer(1).get_packet().get_string_from_utf8()
-	var digest = JSON.parse(JwtDigest._consumeToken(token))
-	if digest.error != OK:
-		print("Parsing json error")
-		print(digest)
-	pass
+	print("\nSERVER TOKEN VALIDATION\n")
+	Token.consumeToken(token)
+	
 	
 
 func _on_Timeout():

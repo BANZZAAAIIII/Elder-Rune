@@ -24,7 +24,7 @@ config/icon="res://icon.png"
 PlayerData="*res://Networking/PlayerData.gd"
 Server="*res://Networking/ServerNetworking.gd"
 WebSocket="*res://Networking/WebSocket.gd"
-JwtDigest="*res://Server/JwtDigest.cs"
+Token="*res://Server/Token.cs"
 
 [network]
 

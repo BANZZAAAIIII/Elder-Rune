@@ -13,4 +13,5 @@ puppetsync func spawn_player(player_pos, peer_id):
 
 puppetsync func despawn_player(peer_id):
 	# Gets the player node with the uniqe peer id and removes it
-	get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()
+	if(get_node("ConnectedPlayers").has_node(str(peer_id))): # Check if player exists
+		get_node("ConnectedPlayers").get_node(str(peer_id)).queue_free()

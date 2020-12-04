@@ -106,15 +106,4 @@ size_flags_horizontal = 8
 text = "100"
 items = [ "100", null, false, 0, null, "101", null, false, 1, null ]
 selected = 0
-
-[node name="TempLogin" type="Button" parent="."]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -38.0
-margin_right = 612.0
-text = "Login without authentication for testing"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 [connection signal="pressed" from="GridContainer/LoginButton" to="." method="_on_LoginButton_pressed"]
-[connection signal="pressed" from="TempLogin" to="." method="_on_TempLogin_pressed"]
