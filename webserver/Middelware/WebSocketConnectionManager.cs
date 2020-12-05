@@ -11,6 +11,7 @@ namespace webserver.Middelware
     public class WebSocketConnectionManager
     {
         private ConcurrentDictionary<string, WebSocket> _sockets = new ConcurrentDictionary<string, WebSocket>();
+        
         public ConcurrentDictionary<string, WebSocket> GetAllSockets()
         {
             return _sockets;
@@ -34,7 +35,15 @@ namespace webserver.Middelware
         // TODO: Get input ID of socket and return it
         public WebSocket FindSocket()
         {
-            return GetAllSockets().First().Value;
+            try
+            {
+                //TODO: Implement this when webserver is able to handle multiple worlds
+                return GetAllSockets().First().Value;
+            }
+            catch(Exception e)
+            {
+                throw new Exception("WebSocketManager FindSocket: " + e.Message);
+            }
         }
     }
 }

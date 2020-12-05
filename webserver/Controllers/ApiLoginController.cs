@@ -64,15 +64,24 @@ namespace webserver.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure: false);
             if (result.Succeeded)
-            {                
-                _logger.LogInformation($"User {user} logged into {model.World}");
+            {             
+                
+                try
+                {                  
 
-                List<Claim> claims = new List<Claim>();                
-                claims.Add(new Claim("user", user.UserName));
-                claims.Add(new Claim("guid", Guid.NewGuid().ToString()));                
-                var sender = new WebSocketUtility();                
-                string token = await sender.SendMessage(claims, _webSocket.FindSocket());
-                return Ok(token);
+                    List<Claim> claims = new List<Claim>();
+                    claims.Add(new Claim("user", user.UserName));
+                    claims.Add(new Claim("guid", Guid.NewGuid().ToString()));
+                    var sender = new WebSocketUtility();
+                    string token = await sender.SendMessage(claims, _webSocket.FindSocket());
+                    _logger.LogInformation($"User {user} logged into {model.World}");
+                    return Ok(token);
+                }
+                catch(Exception e)
+                {
+                    _logger.LogError(e.Message);
+                    return BadRequest();
+                }               
             }
             else
             {
