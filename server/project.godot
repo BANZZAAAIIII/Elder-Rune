@@ -25,7 +25,3 @@ PlayerData="*res://Networking/PlayerData.gd"
 Server="*res://Networking/ServerNetworking.gd"
 WebSocket="*res://Networking/WebSocket.gd"
 Token="*res://Server/Token.cs"
-
-[network]
-
-ssl/certificates="res://Temp_cert.cer"

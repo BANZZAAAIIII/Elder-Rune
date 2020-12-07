@@ -30,6 +30,7 @@ func _ready():
 
 func connect_to_webserver():
 	print("Connecting to webserver...")
+	client.verify_ssl = false
 	var err = client.connect_to_url(url)
 	if err != OK:
 		print("Unable to connect to %s" % url)
