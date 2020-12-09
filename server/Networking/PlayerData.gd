@@ -6,6 +6,11 @@ var __players = {}
 const PLAYER_ID = "id"
 const PLAYER_NAME = "name"
 
+func _ready():
+	DatabaseConnection.getPlayerPosition(1)				# gets user by id / name??
+	DatabaseConnection.updatePlayerPosition(1, 20, 20)	# set x,y values
+	DatabaseConnection.getPlayerPosition(1)				# checks updated values
+	
 
 # Create a player object to store data in
 func create_new_player(player_id: int, player_name: String) -> Dictionary:
