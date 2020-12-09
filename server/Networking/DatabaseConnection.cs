@@ -2,75 +2,71 @@ using Godot;
 using System;
 using Npgsql;
 
-public class DatabaseConnection : Godot.Node
+
+public class DatabaseConnection : Node
 {
+	
+	private NpgsqlConnection conn;
 	public override void _Ready()
 	{
-		// Connects to database
-		NpgsqlConnection conn = new NpgsqlConnection("Host=localhost;Username=postgres;Password=elruadmin;Database=postgres");
-		
+		conn = new NpgsqlConnection("Host=localhost;Username=postgres;Password=elruadmin;Database=postgres");
+	}
+	
+	// Gets x,y position from user id, parameters (id)
+	public Vector2 getPlayerPosition(int id)
+	{
 		try
-		{	
-			// Opens a connection for query
+		{
 			conn.Open();
-			int player_id = 1;  // get logged in player
+		
+			int player_id = id;
+			int X_POSITION = 0;
+			int Y_POSITION = 0;
 		
 			NpgsqlCommand player = new NpgsqlCommand("SELECT * FROM player WHERE player_id = " + player_id, conn);
 			NpgsqlDataReader player_rdr = player.ExecuteReader();
 			
-			// Assign empty startvalues, will be overwritten by values from database
-			double X_POSITION = 0.0;
-			double Y_POSITION = 0.0;
-			
 			while (player_rdr.Read())
 			{
-				// get players position from databse
-				X_POSITION = player_rdr.GetDouble(5);
-				Y_POSITION = player_rdr.GetDouble(6);
+				X_POSITION = player_rdr.GetInt32(5);
+				Y_POSITION = player_rdr.GetInt32(6);
 			}
-			// x,y position printed from database
-			GD.Print("start x: ", X_POSITION, ", start y: ", Y_POSITION);
-			// Close the connection
+			
+			Vector2 player_position = new Vector2(X_POSITION, Y_POSITION);
+			GD.Print("Current position: " + player_position);
 			conn.Close();
 			
+			return player_position;
 			
+		}
+		
+		catch (Exception exception)
+		{
+			Vector2 player_pos = new Vector2(0, 0);
+			return player_pos;
+		}
+	}
+	// Updates player, parameters (id, x_pos, y_pos)
+	public void updatePlayerPosition(int id, int x_pos, int y_pos)
+	{
+		try
+		{
 			conn.Open();
-			Random random_x = new Random();
-			Random random_y = new Random();
 			
-			// Randomizes x,y values for easier testing
-			double NEW_X_POSITION = 200 * random_x.NextDouble();	// get players x position at disconnect
-			double NEW_Y_POSITION = 200 * random_y.NextDouble();	// get players y position at disconnect
+			int player_id = id;
+			int X_POSITION = x_pos;
+			int Y_POSITION = y_pos;
 			
-			// Call this when the user disconnects to save his x,y position
-			var update = new NpgsqlCommand("UPDATE player SET x_position =  @NEW_X_POSITION, y_position = @NEW_Y_POSITION WHERE player_id = " + player_id, conn);
-			update.Parameters.AddWithValue("@NEW_X_POSITION", NEW_X_POSITION);
-			update.Parameters.AddWithValue("@NEW_Y_POSITION", NEW_Y_POSITION);
+			var update = new NpgsqlCommand("UPDATE player SET x_position = @X_POSITION, y_position = @Y_POSITION WHERE player_id = " + player_id, conn);
+			update.Parameters.AddWithValue("@X_POSITION", X_POSITION);
+			update.Parameters.AddWithValue("@Y_POSITION", Y_POSITION);
 			update.ExecuteNonQuery();
 			conn.Close();
-			
-			
-			conn.Open();
-			// Used this to check if the position was updated
-			NpgsqlCommand updated_player = new NpgsqlCommand("SELECT * FROM player WHERE player_id = " + player_id, conn);
-			NpgsqlDataReader updated_player_rdr = updated_player.ExecuteReader();
-			
-			while (updated_player_rdr.Read())
-			{
-				X_POSITION = updated_player_rdr.GetDouble(5);
-				Y_POSITION = updated_player_rdr.GetDouble(6);
-			}
-			
-			GD.Print("end x: " + X_POSITION + ", end y: " + Y_POSITION);
-			conn.Close();
-			
 		}
 		
 		catch (Exception exception)
 		{
 			GD.Print(exception);
 		}
-		
 	}
-
 }
