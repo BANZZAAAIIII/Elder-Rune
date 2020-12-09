@@ -30,7 +30,7 @@ namespace webserver.Data
 
             um.CreateAsync(admin, "Password1.").Wait(); // Async lets your program to continue the code even though the funciton is not finished
 
-            um.AddToRoleAsync(admin, "Admin"); // Add Admin role to admin user
+            um.AddToRoleAsync(admin, "Admin").Wait(); // Add Admin role to admin user
 
 
             // Create users
