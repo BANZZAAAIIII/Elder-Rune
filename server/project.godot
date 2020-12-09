@@ -25,3 +25,5 @@ PlayerData="*res://Networking/PlayerData.gd"
 Server="*res://Networking/ServerNetworking.gd"
 WebSocket="*res://Networking/WebSocket.gd"
 Token="*res://Server/Token.cs"
+DatabaseConnection="*res://Networking/DatabaseConnection.cs"
+

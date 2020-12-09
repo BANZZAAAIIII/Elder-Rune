@@ -26,7 +26,7 @@ func _process(delta):
 	velocity = puppet_velocity
 
 	# move the node
-	position += velocity * delta
+	position += velocity * delta	
 
 	# This is to remove jitter. 
 	# If we dont do this the puppet player will jump/jitter between
