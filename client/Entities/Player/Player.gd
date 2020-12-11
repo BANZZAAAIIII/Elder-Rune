@@ -19,13 +19,14 @@ var latest_server_state			= 0
 onready var position_label_loc = get_node("PosLoc")
 onready var position_label_pup = get_node("PosPup")
 
-#Weapon
+# Weapon
 onready var weapons = preload("res://Entities/Weapons/Iron_spear.tscn")
 
 # Timing vars
 const TICK_RATE 	= 0.1
 var time 			= 0
 
+# Linear interpolate
 var lerp_time		= 0
 var lerp_time_delay	= 0 	# Can be used to increase or decrease lerp_time
 var lerp_timeout	= 0.0
@@ -56,10 +57,12 @@ func _ready():
 			
 func _physics_process(delta):
 	movement_loop(delta)
-	position_disp()
 	animation_loop()
 	attack()
-
+	
+	# Displays players local and latest position form server	
+	position_disp()
+	
 		
 func movement_loop(delta):
 	if is_network_master():	
@@ -71,9 +74,9 @@ func movement_loop(delta):
 		# warning-ignore:return_value_discarded
 		move_and_slide(velocity) 
 
-
+		
 		time += delta
-		# Will send until server has acknowledg that the move_direction has changed
+		# Will send until server has acknowledge that the move_direction has changed
 		if !move_acknowledged and time > TICK_RATE:
 			time = 0
 			rpc_unreliable_id(Server.SERVER_ID, "get_move", move_direction, OS.get_system_time_msecs())
@@ -92,16 +95,14 @@ func movement_loop(delta):
 		if lerp_time > lerp_timeout:
 			# Gets the distant from local postion and latest postition from server
 			# multiples the divergence with 2 to get a bigger value
-			divergence = (position - server_position.front()).length() * 2
-			print(divergence)
+			divergence = (position - server_position.front()).length()
 			if divergence > 2:
 				if move_direction == Vector2.ZERO:
-					divergence = clamp(divergence, 10, 20)
+					divergence = clamp(divergence * 2, 10, 20)
 					position = position.linear_interpolate(server_position.front(), delta * divergence)
 				else:
-					divergence = clamp(divergence, 2, 10)
+					divergence = clamp(divergence * 2, 2, 10)
 					position = position.linear_interpolate(server_position.front(), delta * divergence)
-			
 			else:
 				position = server_position.front()
 
@@ -110,32 +111,31 @@ func movement_loop(delta):
 			lerp_timeout = 0
 			
 			if server_position.size() != 1:
-				server_position.pop_back()
-		else:
-			print("Not syncing" + str(OS.get_system_time_msecs()))
-				
+				server_position.pop_back()				
 			
 	else:
 		# This is realy just to get change_sprite_direction() to work on puppet players
 		velocity = server_velocity
 		# Synces the player smoothly with the position from server
 		divergence = (position - server_position.front()).length()
-		if divergence > 1:
-			divergence = clamp(divergence * 2, 5, 10)
-			position = position.linear_interpolate(server_position.front(), delta * divergence)
+		if divergence > 2:
+			if move_direction == Vector2.ZERO:
+				divergence = clamp(divergence * 2, 10, 20)
+				position = position.linear_interpolate(server_position.front(), delta * divergence)
+			else:
+				divergence = clamp(divergence * 2, 2, 10)
+				position = position.linear_interpolate(server_position.front(), delta * divergence)
 		else:
-			position = server_position.front()
-
+				position = server_position.front()
+			
 
 # s_movement contains:
 # [position, velocity, OS.get_system_time_msecs()]
 remote func process_movement(s_movement):
-#	print(str(s_movement[2]) + " : " + str(latest_server_state))
 	if s_movement[2] > latest_server_state:
 		latest_server_state = s_movement[2]
 		
 		server_position.push_front(s_movement[0]) 
-	#	server_position.push_front(Vector2.ZERO) 
 		server_velocity = s_movement[1]
 	else:
 		print_debug("Server packet out of order")

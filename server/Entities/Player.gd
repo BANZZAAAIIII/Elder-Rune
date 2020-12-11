@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const SPEED 	= 150
 
-var FastTick	= 0.01
+var FastTick	= 0.02
 var SlowTick	= 1
 
 var move_direction			= Vector2.ZERO
@@ -19,7 +19,7 @@ func _ready():
 	# Stops client from sending move_direction until they start moving
 	rset_id(self.get_network_master(),"move_acknowledged", true)
 	
-	SyncTimer.set_wait_time(FastTick)
+	SyncTimer.set_wait_time(SlowTick)
 	SyncTimer.start()
 	
 	

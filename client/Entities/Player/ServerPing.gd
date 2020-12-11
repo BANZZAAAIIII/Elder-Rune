@@ -33,7 +33,7 @@ func _on_PingTimer_timeout():
 		ping.pop_back()
 
 
-remote func ping_answer(s_time):
+remote func ping_answer():
 	ping.push_front(OS.get_ticks_msec() - time) 
 	
 	var sum = 0

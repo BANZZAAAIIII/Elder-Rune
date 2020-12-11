@@ -5,12 +5,9 @@ const SERVER_IP := "localhost"
 const SERVER_PORT := 6008
 const SERVER_ID := 1
 
-# For ping
-var ping_start	= 0
-var ping		= 0
-
-#
 var connected 	= false
+
+var token = ""
 
 
 func _ready():
@@ -101,7 +98,6 @@ remote func recieve_complete_chat(complete_text):
 	var player_id = get_tree().get_network_unique_id()
 	var path = "/root/World/ConnectedPlayers/" + str(player_id) + "/ChatBox"
 	print_debug(path)
-	get_node(path)
 	get_node(path).print_chat_message(complete_text)
 	
 	
