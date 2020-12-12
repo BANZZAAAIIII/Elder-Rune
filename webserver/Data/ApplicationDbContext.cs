@@ -20,5 +20,7 @@ namespace webserver.Data
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<DevBlog> DevBlogs { get; set; }
+        
+        public DbSet<Player> players { get; set; }
     }
 }

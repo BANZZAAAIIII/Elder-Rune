@@ -36,6 +36,16 @@ func _peer_connected(peer_id):
 	print("\nCLIENT TOKEN VALIDATION\n")	
 
 func _peer_disconnected(peer_id):
+	# Saves the players position to the database
+	var player = PlayerData.get_player(peer_id)
+	var player_name = str(player["name"])
+	var path = "/root/World/ConnectedPlayers/" + str(peer_id)
+	var position = get_node(path).position
+	var x_position = int(position.x)
+	var y_position = int(position.y)
+	
+	DatabaseConnection.updatePlayerPosition(player_name, x_position, y_position)
+	
 	# Removes player node from the world
 	get_node("/root/World").rpc("despawn_player", peer_id)
 	print("User disconnected: ", str(peer_id))
@@ -74,9 +84,17 @@ remote func initiate_world():
 			player.position, 
 			player.get_network_master()
 		)
-
+	
+	#Get player name from PlayerData
+	var player = PlayerData.get_player(player_peer_id)
+	var player_name = str(player["name"])
+	
+	#Get current position in the database
+	var player_pos = Vector2.ZERO
+	player_pos = DatabaseConnection.getPlayerPosition(player_name)
+	
 	# Spawns the connected player to the world
-	world_node.rpc("spawn_player", Vector2(0,0), player_peer_id)
+	world_node.rpc("spawn_player", player_pos, player_peer_id)
 
 #Return chat message to ClientNetworking	
 func return_chat_message(complete_text):

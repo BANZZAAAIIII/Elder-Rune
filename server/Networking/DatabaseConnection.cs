@@ -9,36 +9,38 @@ public class DatabaseConnection : Node
 	private NpgsqlConnection conn;
 	public override void _Ready()
 	{
-		conn = new NpgsqlConnection("Host=localhost;Username=postgres;Password=elruadmin;Database=postgres");
+		conn = new NpgsqlConnection("Host=localhost;Username=postgres;Password=elruadmin;Database=elru");
 	}
 	
 	// Gets x,y position from user id, parameters (id)
-	public Vector2 getPlayerPosition(int id)
+	public Vector2 getPlayerPosition(string name)
 	{
 		try
 		{
 			conn.Open();
 		
-			int player_id = id;
+			string player_name = name;
 			int X_POSITION = 0;
 			int Y_POSITION = 0;
 		
-			NpgsqlCommand player = new NpgsqlCommand("SELECT * FROM player WHERE player_id = " + player_id, conn);
+			NpgsqlCommand player = new NpgsqlCommand("SELECT * FROM players WHERE player_name = '"+ player_name + "'", conn);
 			NpgsqlDataReader player_rdr = player.ExecuteReader();
 			
 			while (player_rdr.Read())
 			{
-				X_POSITION = player_rdr.GetInt32(5);
-				Y_POSITION = player_rdr.GetInt32(6);
+				X_POSITION = player_rdr.GetInt32(1);
+				Y_POSITION = player_rdr.GetInt32(2);
 			}
+			
 			
 			Vector2 player_position = new Vector2(X_POSITION, Y_POSITION);
 			GD.Print("Current position: " + player_position);
 			conn.Close();
 			
 			return player_position;
-			
+		
 		}
+			
 		
 		catch (Exception exception)
 		{
@@ -47,17 +49,17 @@ public class DatabaseConnection : Node
 		}
 	}
 	// Updates player, parameters (id, x_pos, y_pos)
-	public void updatePlayerPosition(int id, int x_pos, int y_pos)
+	public void updatePlayerPosition(string name, int x_pos, int y_pos)
 	{
 		try
 		{
 			conn.Open();
 			
-			int player_id = id;
+			string player_name = name;
 			int X_POSITION = x_pos;
 			int Y_POSITION = y_pos;
 			
-			var update = new NpgsqlCommand("UPDATE player SET x_position = @X_POSITION, y_position = @Y_POSITION WHERE player_id = " + player_id, conn);
+			var update = new NpgsqlCommand("UPDATE players SET x_position = @X_POSITION, y_position = @Y_POSITION WHERE player_name = '" + player_name + "'", conn);
 			update.Parameters.AddWithValue("@X_POSITION", X_POSITION);
 			update.Parameters.AddWithValue("@Y_POSITION", Y_POSITION);
 			update.ExecuteNonQuery();

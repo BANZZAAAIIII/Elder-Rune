@@ -70,7 +70,20 @@ namespace webserver.Data
                     year += 1;
 
                     if (month >= 12) month = 1;
+                }
             }
+
+            db.SaveChanges();
+            
+            foreach (var user in db.ApplicationUsers.Include(u => u.players))
+            {
+                user.players.Add( new Player
+                {
+                    x_position = 0,
+                    y_position = 0,
+                    player_name=user.UserName
+                });
+
             }
 
             db.SaveChanges();

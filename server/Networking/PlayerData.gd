@@ -7,9 +7,10 @@ const PLAYER_ID = "id"
 const PLAYER_NAME = "name"
 
 func _ready():
-	DatabaseConnection.getPlayerPosition(1)				# gets user by id / name??
-	DatabaseConnection.updatePlayerPosition(1, 20, 20)	# set x,y values
-	DatabaseConnection.getPlayerPosition(1)				# checks updated values
+	#DatabaseConnection.getPlayerPosition("user1")				# gets user by id / name??
+	#DatabaseConnection.updatePlayerPosition(1, 20, 20)	# set x,y values
+	#DatabaseConnection.getPlayerPosition(1)				# checks updated values
+	pass
 	
 
 # Create a player object to store data in

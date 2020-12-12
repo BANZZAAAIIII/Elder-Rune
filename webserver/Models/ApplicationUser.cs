@@ -11,5 +11,6 @@ namespace webserver.Models
     {
         
        public List<DevBlog> DevBlogs { get; set; }
+       public List<Player> players { get; set; }
     }
 }

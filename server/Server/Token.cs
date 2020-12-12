@@ -75,7 +75,7 @@ public class Token : Node
 		GD.Print("\nClient:");
 		try
 		{
-            //GD.Print("\nClient:");
+			//GD.Print("\nClient:");
 			if (clientTokens.TryGetValue(peerID, out string token))
 			{
 				GD.Print(clientTokens[peerID]);
@@ -86,26 +86,26 @@ public class Token : Node
 				clientToken.TryGetValue("exp", out string time);
 				GD.Print("\nTime: " + time + "\nGuid: " + guid + "\nUsername: " + username + "\n");
 				_ = long.TryParse(time, out long unix);
-                while (unix - DateTimeOffset.Now.ToUnixTimeSeconds() < 60) // Loop for as long as less than 30 seconds have passed
+				while (unix - DateTimeOffset.Now.ToUnixTimeSeconds() < 60) // Loop for as long as less than 30 seconds have passed
 				{					
 					serverToken = findTokenUsername(username);
 					if(serverToken != null)
-                    {						
+					{						
 						_ = serverToken.TryGetValue("guid", out string sGuid);
 						if (guid == sGuid)
-                        {							
+						{							
 							EmitSignal(nameof(ValidatePlayer), peerID, username, true);               // Does not work, as Godot does not have await/async operators              // Token is the same on both client and game server
 							clientTokens.Remove(peerID);	// Remove tokens
 							serverTokens.Remove(serverToken);
 							serverToken = null;
 							return;
 						}					
-                    }
-                    else
-                    {
+					}
+					else
+					{
 						await ToSignal(GetTree().CreateTimer(2), "timeout"); // Timer fires after 2 seconds resuming the while loop
-                    }
-                }
+					}
+				}
 				
 			}			
 		}
@@ -151,11 +151,11 @@ public class Token : Node
 
 			GD.Print("\n\tVALIDATION SUCCESSFULL\n\t");
 		}
-        //catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException e) // Compiler error CS0433 use general exception instead
-        //{
-        //    GD.Print(e.Message);
-        //}
-       
+		//catch (Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException e) // Compiler error CS0433 use general exception instead
+		//{
+		//    GD.Print(e.Message);
+		//}
+	   
 		catch (Exception e)
 		{
 			//throw new Exception("Could not validate token: " + e.Message);
@@ -221,7 +221,7 @@ public class Token : Node
 				GD.Print(i);
 				serverTokens[i].TryGetValue("exp", out string time);				
 				if (long.TryParse(time, out long unix) && unix > DateTimeOffset.Now.ToUnixTimeSeconds())
-                {
+				{
 					GD.Print("Removed: " + serverTokens[i]);
 					serverTokens.RemoveAt(i);
 				}
